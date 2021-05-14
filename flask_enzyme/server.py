@@ -22,6 +22,10 @@ def home_page():
 def visualization():
     return render_template('viz.html')
 
+@app.route('/documentation')
+def documentation():
+    return render_template('doc.html')
+
 @app.route('/predict', methods = ['POST'])
 def predict():
     if request.method == 'POST':
