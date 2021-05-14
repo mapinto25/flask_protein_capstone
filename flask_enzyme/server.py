@@ -18,6 +18,10 @@ app = Flask(__name__)
 def home_page():
     return render_template('index.html')
 
+@app.route('/visualization')
+def visualization():
+    return render_template('viz.html')
+
 @app.route('/predict', methods = ['POST'])
 def predict():
     if request.method == 'POST':
@@ -61,6 +65,18 @@ def predict():
 
     all_data['classes'] = class_list
 
+    
+    enzyme_non_enzyme = []
+
+    for enzyme in enzyme_list:
+        current_class = enzyme_to_class[enzyme]
+        if current_class == 0:
+            enzyme_non_enzyme.append(0)
+        else:
+            enzyme_non_enzyme.append(1)
+
+
+    all_data['enzyme_non_enzyme'] = enzyme_non_enzyme
     embedings = []
 
 
@@ -75,16 +91,39 @@ def predict():
 
 
     x_train = list(train['embeddings'])
-    y_train = train[['classes']]
+    y_train_classes = train[['classes']]
+    y_train_enzyme = train[['enzyme_non_enzyme']]
     x_test = list(test['embeddings'])
-    y_test = test[['classes']]
+    y_test_class = test[['classes']]
+    y_test_enzyme = test[['enzyme_non_enzyme']]
+
+    test_enzyme_list = test['Name'].tolist()
+    test_enzyme_list_non_enzyme = []
+    test_enzyme_list_is_enzyme = []
+
+
 
 
     if request.form['down_stream_model'] == 'knn':
         neigh = KNeighborsClassifier(n_neighbors=5)
-        neigh.fit(x_train, y_train)
-        y_pred = neigh.predict(x_test)
-        pred = neigh.predict_proba(x_test)
+
+        neigh.fit(x_train, y_train_enzyme)
+        y_pred_enzyme = neigh.predict(x_test)
+        pred_enzyme = neigh.predict_proba(x_test)
+
+        x_test_classes = []
+
+        for i in range(len(y_pred_enzyme)):
+            if y_pred_enzyme[i] == 0:
+                print(0)
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
+            if y_pred_enzyme[i] == 1:
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+                x_test_classes.append(x_test[i])
+
+        neigh.fit(x_train, y_train_classes)
+        y_pred_classes = neigh.predict(x_test_classes)
+        pred_classes = neigh.predict_proba(x_test_classes)
     elif request.form['down_stream_model'] == 'svc':
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
         clf.fit(x_train,y_train)
@@ -107,20 +146,25 @@ def predict():
     
 
 
-    prob = list(pred[0])
-
-
-
     return_json = {}
+    return_json['prob_class'] = {}
+    return_json['prob_enzyme'] = {}
 
-    i = 1
-    for probability in prob:
-        return_json['class_' + str(i) + '_prob'] = probability
-        i += 1
-    return_json['y_pred'] = y_pred[0]
-    return_json['prob'] = pred.tolist()
-    print(pred)
 
+    pred_class = pred_classes.tolist()
+    print(test_enzyme_list_is_enzyme)
+    for i in range(len(test_enzyme_list_is_enzyme)):
+        current_enzyme =  test_enzyme_list_is_enzyme[i]
+        return_json['prob_class'][current_enzyme] = pred_classes[i]
+
+
+    pred_enzyme = pred_enzyme.tolist()
+    print(test_enzyme_list_non_enzyme)
+    for i in range(len(test_enzyme_list_non_enzyme)):
+        current_enzyme =  test_enzyme_list_non_enzyme[i]
+        return_json['prob_enzyme'][current_enzyme] = pred_enzyme[i]
+
+    print(return_json)
     return render_template("result.html",result = return_json)
 
 app.run(port='1090')
