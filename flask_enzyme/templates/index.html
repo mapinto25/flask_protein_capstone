@@ -13,21 +13,24 @@
         </style>
     </head>
     <body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/visualization">Visualization</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/documentation">Documentation</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/bert">Bert Model</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+        <nav class="navbar navbar-collapse navbar-expand-lg navbar-light bg-light">
+          <div class="container collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/visualization">Visualization</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/documentation">Documentation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/bert">Bert Model</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
       <div class="jumbotron jumbotron-fluid">
         <div class="container">
           <h1 class="display-4">Welcome to Protein Data Analysis – Enzyme Prediction! </h1>
@@ -37,10 +40,50 @@
           <p>To start, please run a batch job on Expanse to convert your fasta file to protein sequence embeddings captured in an npz file. If you do not have an account, please create one through XSEDE User Portal linked here.</p>
         </div>
       </div>
+      <div>
+        <div class="container">
+          <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Downstream Model</th>
+                    <th>NonEnzyme/Enzyme Accuracy</th>
+                    <th>Enzyme Classification Accuracy</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>K-Nearest Neighbors</td>
+                    <td>80.8%</td>
+                    <td>58.5%</td>
+                </tr>
+                <tr>
+                    <td>Random Forest</td>
+                    <td>77.6%</td>
+                    <td>63.9%</td>
+                </tr>
+                <tr>
+                    <td>SVC</td>
+                    <td>81.2%</td>
+                    <td>65.6%</td>
+                </tr>
+                <tr>
+                    <td>Naive Bayes</td>
+                    <td>75.6%</td>
+                    <td>43.3%</td>
+                </tr>
+                <tr>
+                    <td>MLP Classifier</td>
+                    <td>84.1%</td>
+                    <td>68.7%</td>
+                </tr>          
+            </tbody>
+          </table>
+        </div>
+      </div>
         <div id='form'>
           <form  action="http://localhost:1090/predict" method = "post">
             <select class="form-select" aria-label="Default select example" name='model'>
-              <option selected>Chose Embeddings</option>
+              <option selected>Choose Embeddings</option>
               <option  value="tape">Tape</option>
               <option  value="ESM">ESM</option>
               <option  value="combined">Combined</option>
