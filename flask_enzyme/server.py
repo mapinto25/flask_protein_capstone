@@ -15,6 +15,8 @@ import sys
 app = Flask(__name__)
 
 
+current_enzyme_global_data = {}
+
 @app.route('/')
 def home_page():
     return render_template('index.html')
@@ -30,6 +32,17 @@ def visualization():
 @app.route('/documentation')
 def documentation():
     return render_template('doc.html')
+
+@app.route('/enzyme/<enzyme_id>', methods=['GET'])
+def enzyme(enzyme_id):
+    #do your code here
+    print('GET!!!!')
+    print(enzyme_id)
+    global current_enzyme_global_data
+    print(current_enzyme_global_data)
+    current_enzyme_classification=  current_enzyme_global_data['predict_class'][enzyme_id]
+    print(current_enzyme_classification)
+    return render_template("enzyme.html", current_enzyme_classification=current_enzyme_classification)
 
 @app.route('/predict', methods = ['POST'])
 def predict():
@@ -124,7 +137,6 @@ def predict():
 
         for i in range(len(y_pred_enzyme)):
             if y_pred_enzyme[i] == 0:
-                print(0)
                 test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
@@ -158,22 +170,24 @@ def predict():
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
+    return_json['predict_class']= {}
 
 
     pred_class = pred_classes.tolist()
-    print(test_enzyme_list_is_enzyme)
     for i in range(len(test_enzyme_list_is_enzyme)):
         current_enzyme =  test_enzyme_list_is_enzyme[i]
         return_json['prob_class'][current_enzyme] = pred_classes[i]
-
+        return_json['predict_class'][current_enzyme] = y_pred_classes[i]
 
     pred_enzyme = pred_enzyme.tolist()
-    print(test_enzyme_list_non_enzyme)
     for i in range(len(test_enzyme_list_non_enzyme)):
         current_enzyme =  test_enzyme_list_non_enzyme[i]
         return_json['prob_enzyme'][current_enzyme] = pred_enzyme[i]
+        return_json['predict_class'][current_enzyme] = y_pred_classes[i]
 
-    print(return_json)
+    global current_enzyme_global_data
+    current_enzyme_global_data = return_json
+
     return render_template("result.html",result = return_json)
 
 app.run(port='1090')
