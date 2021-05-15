@@ -36,7 +36,6 @@
     <div class="jumbotron text-center" style="margin-bottom:0">
       <h1>DEEPre Enzyme Class Distribution</h1>
     </div> 
-    <!-- <h1 style="text-align: center">DEEPre Enzyme Class Distribution</h1> -->
     <p style="text-align: center">
     </p>
     <!-- Create a div where the graph will take place -->
@@ -61,7 +60,7 @@ var svg = d3.select("#piechart_dataviz")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 // Create dummy data
-var data = {'Oxidoreductases 15%': 3343, 'Transferases 38.4%': 8517, 'Hydrolases 26.7%':5917, 'Lyases 6.9%':1532, 'Isomerases 5.4%':1193, 'Ligases 7.5%':1666}
+var data_p = {'Oxidoreductases 15%': 3343, 'Transferases 38.4%': 8517, 'Hydrolases 26.7%':5917, 'Lyases 6.9%':1532, 'Isomerases 5.4%':1193, 'Ligases 7.5%':1666}
 
 
 // set the color scale
@@ -73,7 +72,7 @@ var color = d3.scaleOrdinal()
 var pie = d3.pie()
   .sort(null) // Do not sort group by size
   .value(function(d) {return d.value; })
-var data_ready = pie(d3.entries(data))
+var data_ready = pie(d3.entries(data_p))
 
 // The arc generator
 var arc = d3.arc()
@@ -134,7 +133,7 @@ svg
     })
 
 
-    const w = 1500;
+const w = 1500;
 const h = 500;
 
 const margins = { top: 50, left: 100, bottom: 100, right: 100 }
@@ -142,17 +141,34 @@ const innerWidth = w - margins.left - margins.right;
 const innerHeight = h - margins.top - margins.bottom;
 
 
-d3.csv(
-  "data/DEEPre_Enzyme_Class_cnts.csv"
-).then((data, error) => {
-  if (error) throw error;
-  // console.log(data);
+// Data for bar chart container
 
-  data.forEach(d => {
-    d.enzymeClass = d.enzymeClass;
-    d.frequency = +d.frequency;
-  });
-
+data =[
+    {
+enzymeClass: 'Oxidoreductases',
+frequency: 3343
+    },
+    {
+enzymeClass: 'Transferases',
+frequency: 8517
+    },
+    {
+enzymeClass: 'Hydrolases',
+frequency: 5917
+    },
+    {
+enzymeClass: 'Lyases',
+frequency: 1532
+    },
+    {
+enzymeClass: 'Isomerases',
+frequency: 1193
+    },
+    {
+enzymeClass: 'Ligases',
+frequency: 1666
+    }
+]
   // Create a select dropdown
   const mySelection = document.getElementById("selectMe");
 
@@ -273,7 +289,7 @@ d3.csv(
 
   }
 
-});
+//});
     </script> 
   </body>
 </html>

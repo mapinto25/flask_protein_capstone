@@ -41,19 +41,60 @@
     <h1>Documentation</h1>
 </div>
 
-<div class="container">
-    <div class="bs-example">
-        <div class="accordion" id="accordionExample">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne">1. Getting Started</button>									
-                    </h2>
+
+<div class="bs-example">
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne">1. Getting Started</button>									
+                </h2>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p><h3>Welcome to Protein Data Analysis - Enzyme Predictions!</h3>
+                    <br>
+                    Provide us with your protein data, and of the enzymes included in your dataset, our downstream models will predict the respective enzyme classification and provide probability confidence per prediction.</br>
+                    <br>
+                    Our method leverages Bidirectional Encoder Representations from Transformer models to take protein strings as input, and output embeddings.</br>
+                    <br>
+                    To start, please run a batch job on Expanse to convert your fasta file to protein sequence embeddings captured in an npz file. If you do not have an account, please create one through <a href="https://portal.xsede.org/my-xsede#/guest">XSEDE User Portal linked here</a>. Once you have an account, you’ll have the option to leverage TAPE or ESM embeddings </br>
+                    <br>
+                    To run the Application, ensure that you are using python3 server.py
+                    </p>
+                    <p><h3>About the Model</h3>
+                    <br>
+                    Biologists work with a multitude of protein sequences represented by strings of letters. The amino acid sequence of these proteins allows us to leverage various machine learning Natural Language Processing algorithms aimed to predict enzyme classifications which are indicative of both protein structure and functionality. </br>
+                    <br>
+                    Our goal is to propose a multi level classification solution that is designed to predict the respective class of a given enzyme. Our approach consists of predicting the classification of an enzyme by applying NLP to a protein sequence. Our method utilizes BERT (Bidirectional Encoder Representations from Transformers) models to create embeddings, or feature vectors, and a variety of machine learning models to predict the respective class and subclass of an enzyme.</br>
+                    </p>
                 </div>
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div class="card-body">
-                        <p>PLACEHOLDER1</p>
-                    </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo">2. Computing Embeddings</button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p>P<h3>TAPE</h3>
+                    <br>
+                    Researchers at UC Berkeley developed Tasks Assessing Protein Embeddings (TAPE) by pretraining a BERT model on 31 million protein sequences.</br>
+                    <br>
+                    TAPE was the first attempt at systematically evaluating semi-supervised learning on protein sequences. It includes a set of five biologically relevant supervised tasks that evaluate the performance of learned protein embeddings across diverse aspects of protein understanding. </br>
+                    <br>
+                    TAPE utilizes semi-supervised learning to jointly leverage information in the unlabeled and labeled data, with the goal of maximizing performance on the supervised task. TAPE utilizes unsupervised pre-trained data of BERT, and provides five biologically relevant downstream prediction tasks to serve as benchmarks. These tasks are categorized into structure prediction, evolutionary understanding, and protein engineering tasks.</br>
+                    </p>
+                    <p><h3>ESM-1b</h3>
+                    <br>
+                    Evolutionary Scale Modeling (ESM-1b), developed by researchers at FaceBook, outperforms all tested single-sequence protein language models across a range of structure prediction tasks.</br>
+                    <br>
+                    The model utilizes unsupervised learning to train a deep contextual language model on 86 billion amino acids across 250 million protein sequences. ESM’s Structural Split Dataset is a five-fold cross validation dataset of protein domain structures that can be used to measure generalization of representations across different levels of structural dissimilarity. </br>
+                    <br>
+                    The representations are learned from sequence data alone, no information about the properties of the sequences is given through supervision or domain-specific features. </br>
+                    </p>
                 </div>
             </div>
             <div class="card">
