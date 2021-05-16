@@ -175,18 +175,64 @@ def predict():
 
     elif request.form['down_stream_model'] == 'deep_learning':
         clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,)).fit(x_train, y_train)
-        y_pred = clf.predict(x_test)
-        pred = clf.predict_proba(x_test)
+        clf.fit(x_train,y_train_enzyme)
+        y_pred_enzyme = clf.predict(x_test)
+        pred_enzyme = clf.predict_proba(x_test)
+
+
+
+        x_test_classes = []
+
+        for i in range(len(y_pred_enzyme)):
+            if y_pred_enzyme[i] == 0:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
+            if y_pred_enzyme[i] == 1:
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+                x_test_classes.append(x_test[i])
+
+        clf.fit(x_train, y_train_classes)
+        y_pred_classes = neigh.predict(x_test_classes)
+        pred_classes = neigh.predict_proba(x_test_classes)
     elif request.form['down_stream_model'] == 'naive':
         gnb = GaussianNB()
-        gnb.fit(x_train,y_train)
-        y_pred = gnb.predict(x_test)
-        pred = gnb.predict_proba(x_test)
+        gnb.fit(x_train,y_train_enzyme)
+        y_pred_enzyme = clf.predict(x_test)
+        pred_enzyme = clf.predict_proba(x_test)
+
+
+
+        x_test_classes = []
+
+        for i in range(len(y_pred_enzyme)):
+            if y_pred_enzyme[i] == 0:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
+            if y_pred_enzyme[i] == 1:
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+                x_test_classes.append(x_test[i])
+
+        gnb.fit(x_train, y_train_classes)
+        y_pred_classes = neigh.predict(x_test_classes)
+        pred_classes = neigh.predict_proba(x_test_classes)
     elif request.form['down_stream_model'] == 'dtree':
         clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
-        clf.fit(x_train,y_train)
-        y_pred = clf.predict(x_test)
-        pred = clf.predict_proba(x_test)
+        clf.fit(x_train,y_train_enzyme)
+        y_pred_enzyme = clf.predict(x_test)
+        pred_enzyme = clf.predict_proba(x_test)
+
+
+
+        x_test_classes = []
+
+        for i in range(len(y_pred_enzyme)):
+            if y_pred_enzyme[i] == 0:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
+            if y_pred_enzyme[i] == 1:
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+                x_test_classes.append(x_test[i])
+
+        clf.fit(x_train, y_train_classes)
+        y_pred_classes = neigh.predict(x_test_classes)
+        pred_classes = neigh.predict_proba(x_test_classes)
     
 
 
