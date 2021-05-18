@@ -23,8 +23,18 @@
 <body>
     <h1>Enzyme Page</h1>
     <h1>Classification is {{current_enzyme_classification}}</h1>
-    {{matrix}}
-    <table>
+    <table class='table'>
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Prob Class 0</th>
+          <th scope="col">Prob Class 1</th>
+          <th scope="col">Prob Class 2</th>
+          <th scope="col">Prob Class 3</th>
+          <th scope="col">Prob Class 4</th>
+          <th scope="col">Prob Class 5</th>
+          <th scope="col">Prob Class 6</th>
+        </tr>
+      </thead>
       {% for row  in matrix %}
       <tr>
         {% for data in row%}
