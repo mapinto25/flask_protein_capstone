@@ -66,9 +66,6 @@ def predict():
         class_file = 'combined.json'
         npz_file = 'combined.npz'
 
-    ### Create the PCA visualization html
-    pca_visualize_data(npz_file,class_file)
-
     embeddings_per_enzyme = {}
     enzyme_list = []
 
@@ -131,7 +128,7 @@ def predict():
     test_enzyme_list_non_enzyme = []
     test_enzyme_list_is_enzyme = []
 
-
+    model_name_formatted = ''
 
 
     if request.form['down_stream_model'] == 'knn':
@@ -155,6 +152,7 @@ def predict():
         neigh.fit(x_train, y_train_classes)
         y_pred_classes = neigh.predict(x_test_classes)
         pred_classes = neigh.predict_proba(x_test_classes)
+        model_name_formatted = 'KNN'
     elif request.form['down_stream_model'] == 'svc':
         print("SVC")
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
@@ -181,6 +179,8 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
 
+        model_name_formatted = 'SVC'
+
     elif request.form['down_stream_model'] == 'deep_learning':
         clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
         clf.fit(x_train,y_train_enzyme)
@@ -201,6 +201,9 @@ def predict():
         clf.fit(x_train, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
+
+
+        model_name_formatted = 'MLP'
     elif request.form['down_stream_model'] == 'naive':
         gnb = GaussianNB()
         gnb.fit(x_train,y_train_enzyme)
@@ -221,6 +224,8 @@ def predict():
         gnb.fit(x_train, y_train_classes)
         y_pred_classes = gnb.predict(x_test_classes)
         pred_classes = gnb.predict_proba(x_test_classes)
+
+        model_name_formatted = 'Naive Bayes'
     elif request.form['down_stream_model'] == 'dtree':
         clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
         clf.fit(x_train,y_train_enzyme)
@@ -244,6 +249,7 @@ def predict():
     
 
 
+    pca_visualize_data(npz_file,class_file, model_name_formatted)
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -261,6 +267,7 @@ def predict():
         current_enzyme =  test_enzyme_list_non_enzyme[i]
         return_json['prob_enzyme'][current_enzyme] = pred_enzyme[i]
         return_json['predict_class'][current_enzyme] = y_pred_classes[i]
+    return_json['model'] = model_name_formatted
 
     global current_enzyme_global_data
     current_enzyme_global_data = return_json
@@ -287,7 +294,7 @@ def gen_arr(embeddings, seq_id_to_label):
         output.append(d)
     return np.array(output), labels
 
-def pca_visualize_data(npz_file,class_file):
+def pca_visualize_data(npz_file,class_file, model_name_formatted):
     """
     Prepare and render an interactive plotly PCA visualization given the following:
         * n_components: Number of PCA components (must be 2 or 3)
@@ -334,10 +341,25 @@ def pca_visualize_data(npz_file,class_file):
             color="target",
             color_discrete_sequence=px.colors.qualitative.G10,
         )
+
+    fig.update_layout(
+    height=800,
+    title_text='PCA Enzyme Data For Model: ' + str(model_name_formatted)
+    )
     
     fig.write_html("templates/pca.html")
 
-    #return redirect(url_for("show_pca"))
+    text = '''
+    <html>
+        <body>
+            <h1><a href='/'>Home</a></h1>
+        </body>
+    </html>
+    '''
+
+    file = open("templates/pca.html","a")
+    file.write(text)
+    file.close()
     return
 
     
