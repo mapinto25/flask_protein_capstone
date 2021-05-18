@@ -170,11 +170,11 @@ def predict():
                 x_test_classes.append(x_test[i])
 
         clf.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = clf.predict(x_test_classes)
+        pred_classes = clf.predict_proba(x_test_classes)
 
     elif request.form['down_stream_model'] == 'deep_learning':
-        clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,)).fit(x_train, y_train)
+        clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
         clf.fit(x_train,y_train_enzyme)
         y_pred_enzyme = clf.predict(x_test)
         pred_enzyme = clf.predict_proba(x_test)
@@ -191,13 +191,13 @@ def predict():
                 x_test_classes.append(x_test[i])
 
         clf.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = clf.predict(x_test_classes)
+        pred_classes = clf.predict_proba(x_test_classes)
     elif request.form['down_stream_model'] == 'naive':
         gnb = GaussianNB()
         gnb.fit(x_train,y_train_enzyme)
-        y_pred_enzyme = clf.predict(x_test)
-        pred_enzyme = clf.predict_proba(x_test)
+        y_pred_enzyme = gnb.predict(x_test)
+        pred_enzyme = gnb.predict_proba(x_test)
 
 
 
@@ -211,8 +211,8 @@ def predict():
                 x_test_classes.append(x_test[i])
 
         gnb.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = gnb.predict(x_test_classes)
+        pred_classes = gnb.predict_proba(x_test_classes)
     elif request.form['down_stream_model'] == 'dtree':
         clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
         clf.fit(x_train,y_train_enzyme)
@@ -231,8 +231,8 @@ def predict():
                 x_test_classes.append(x_test[i])
 
         clf.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = clf.predict(x_test_classes)
+        pred_classes = clf.predict_proba(x_test_classes)
     
 
 
