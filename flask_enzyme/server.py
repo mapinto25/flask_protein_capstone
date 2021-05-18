@@ -9,6 +9,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
+from sklearn.decomposition import PCA
+import plotly.express as px
 import json
 import sys
 
@@ -28,6 +30,10 @@ def bert():
 @app.route('/visualization')
 def visualization():
     return render_template('viz.html')
+
+@app.route('/pca')
+def pca():
+    return render_template('pca.html')
 
 @app.route('/documentation')
 def documentation():
@@ -60,7 +66,9 @@ def predict():
         class_file = 'combined.json'
         npz_file = 'combined.npz'
 
-    
+    ### Create the PCA visualization html
+    pca_visualize_data(npz_file,class_file)
+
     embeddings_per_enzyme = {}
     enzyme_list = []
 
@@ -258,6 +266,81 @@ def predict():
     current_enzyme_global_data = return_json
 
     return render_template("result.html",result = return_json)
+
+def gen_arr(embeddings, seq_id_to_label):
+    """
+    Iterate over all of the sequence IDs in the given subset of the dataset (embeddings),
+    as a nested numpy array. Produce a numpy array of the average embeddings for each
+    sequence, as will a list of the labels by looking up the sequence IDs in seq_id_to_label
+    Args:
+        embeddings (numpy.lib.npyio.NpzFile): Nested numpy array containing embeddings for each sequence ID
+        seq_id_to_label (dict[str,str]): Map from sequence ID to classification label
+    Returns:
+        output (np.array): Average embeddings for each sequence
+        labels (list[str])
+    """
+    keys = embeddings.files
+    output, labels = [], []
+    for key in keys:
+        d = embeddings[key].item()["avg"]
+        labels.append(seq_id_to_label[key])
+        output.append(d)
+    return np.array(output), labels
+
+def pca_visualize_data(npz_file,class_file):
+    """
+    Prepare and render an interactive plotly PCA visualization given the following:
+        * n_components: Number of PCA components (must be 2 or 3)
+        * targets: Labels file
+        * input_data: gzipped npz file with sequence embeddings
+    """
+    
+    n_components = 3
+
+    #load labels file
+    lookup_d = json.load(open(f'./input/{class_file}'))
+
+    #load npz file
+    input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
+
+    
+
+    print("generating dataframes")
+    embed_arr, embed_labels = gen_arr(input_data, lookup_d)
+    print("generating PCA")
+    pca = PCA(n_components=3)
+    principal_components = pca.fit_transform(embed_arr)
+    principal_df = pd.DataFrame(
+        data=principal_components, columns=["pc1", "pc2", "pc3"]
+    )
+    principal_df["target"] = embed_labels
+    print("generating plot")
+
+    # Adjust PCA according to the number of components
+    if n_components == 3:
+        fig = px.scatter_3d(
+            principal_df,
+            x="pc1",
+            y="pc2",
+            z="pc3",
+            color="target",
+            color_discrete_sequence=px.colors.qualitative.G10,
+        )
+    if n_components == 2:
+        fig = px.scatter(
+            principal_df,
+            x="pc1",
+            y="pc2",
+            color="target",
+            color_discrete_sequence=px.colors.qualitative.G10,
+        )
+    
+    fig.write_html("templates/pca.html")
+
+    #return redirect(url_for("show_pca"))
+    return
+
+    
 
 app.run(port='1090')
 
