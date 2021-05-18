@@ -22,7 +22,18 @@
 </head>
 <body>
     <h1>Enzyme Page</h1>
-    <h1>Classification is {{current_enzyme_classification}}</hq>
+    <h1>Classification is {{current_enzyme_classification}}</h1>
+    {{matrix}}
+    <table>
+      {% for row  in matrix %}
+      <tr>
+        {% for data in row%}
+        <td>{{data}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+
 </body>
 </html>
 
