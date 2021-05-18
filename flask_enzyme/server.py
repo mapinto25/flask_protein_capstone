@@ -246,10 +246,11 @@ def predict():
         clf.fit(x_train, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
+        model_name_formatted = 'Random Forest'
     
 
 
-    pca_visualize_data(npz_file,class_file, model_name_formatted)
+    pca_visualize_data(npz_file,class_file)
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -294,7 +295,7 @@ def gen_arr(embeddings, seq_id_to_label):
         output.append(d)
     return np.array(output), labels
 
-def pca_visualize_data(npz_file,class_file, model_name_formatted):
+def pca_visualize_data(npz_file,class_file):
     """
     Prepare and render an interactive plotly PCA visualization given the following:
         * n_components: Number of PCA components (must be 2 or 3)
@@ -344,7 +345,7 @@ def pca_visualize_data(npz_file,class_file, model_name_formatted):
 
     fig.update_layout(
     height=800,
-    title_text='PCA Enzyme Data For Model: ' + str(model_name_formatted)
+    title_text='PCA Enzyme Data'
     )
     
     fig.write_html("templates/pca.html")
