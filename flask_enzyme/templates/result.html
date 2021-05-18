@@ -86,6 +86,7 @@
       <thead class="thead-dark">
         <tr>
           <th scope="col">Enzyme Name</th>
+          <th scope="col">Prediction</th>
           <th scope="col">Prob Class 0</th>
           <th scope="col">Prob Class 1</th>
           <th scope="col">Prob Class 2</th>
@@ -93,7 +94,6 @@
           <th scope="col">Prob Class 4</th>
           <th scope="col">Prob Class 5</th>
           <th scope="col">Prob Class 6</th>
-          <th scope="col">Prediction</th>
         </tr>
       </thead>
       <tbody>
@@ -101,10 +101,10 @@
    
          <tr>
           <th><a href="/enzyme/{{enzyme}}">{{enzyme}}<a></th>
+            <td>{{ result['predict_class'][enzyme]}}</td>
             {% for prob  in result['prob_class'][enzyme] %}
              <td> {{prob}} </td>
             {% endfor %}
-            <td>{{ result['predict_class'][enzyme]}}</td>
          </tr>
      
          {% endfor %}
@@ -121,9 +121,9 @@
       <thead class="thead-dark">
         <tr>
           <th scope="col">Sequence Name</th>
+          <th scope="col">Prediction</th>
           <th scope="col">Prob Non Enzyme</th>
           <th scope="col">Prob Enzyme</th>
-          <th scope="col">Prediction</th>
         </tr>
       </thead>
       <tbody>
@@ -131,10 +131,10 @@
    
          <tr>
             <th><a href="/enzyme/{{enzyme}}">{{enzyme}}<a></th>
+            <td>{{ result['predict_class'][enzyme]}}</td>
             {% for prob  in result['prob_enzyme'][enzyme] %}
              <td> {{prob}} </td>
             {% endfor %}
-            <td>{{ result['predict_class'][enzyme]}}</td>
          </tr>
          {% endfor %}
       </tbody>
