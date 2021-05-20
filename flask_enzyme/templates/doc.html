@@ -108,7 +108,61 @@
                 </div>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
-                        <p>PLACEHOLDER3</p>
+                        <p><h3>RUN SCRIPTS</h3>
+                        <br>
+                        <h4>TAPE - to run TAPE embeddings on Expanse, use the below run script</h4>
+                         </br>
+                        /cm/shared/apps/containers/singularity/tape-0.4-20210427.sif
+                        <br>
+                        #!/usr/bin/env bash<br>
+                        #SBATCH --job-name=tape-0.4-fake_enzyme_test<br>
+                        #SBATCH --account=use300<br>
+                        #SBATCH --partition=gpu-shared<br>
+                        #SBATCH --nodes=1<br>
+                        #SBATCH --ntasks-per-node=1<br>
+                        #SBATCH --cpus-per-task=10<br>
+                        #SBATCH --mem=93G<br>
+                        #SBATCH --gpus=1<br>
+                        #SBATCH --time=00:30:00<br>
+                        #SBATCH --output=%x.o%j.%N<br>
+                        <br>
+                        declare -xr SINGULARITY_MODULE='singularitypro/3.5'<br>
+                        declare -xr SINGULAIRTY_CONTAINER_DIR='/cm/shared/apps/containers/singularity'<br>
+                        <br>
+                        module purge<br>
+                        module load "${SINGULARITY_MODULE}"<br>
+                        module list<br>
+                        printenv<br>
+                        <br>
+                        time -p singularity exec --bind /expanse,/scratch --nv "${SINGULAIRTY_CONTAINER_DIR}/ciml/tape-0.4-20210427.sif" python -u run_tape.py</br>
+                        </p>
+                        <p>
+                        <h4>ESM-1b: to run ESM-1b embeddings on Expanse, use the below script</h4>
+                        <br>
+                        /cm/shared/apps/containers/singularity/esm-0.3.1-20210427.sif
+                        <br>
+                        #!/usr/bin/env bash
+                         <br>
+                        #SBATCH --job-name=esm-0.3.1-Enzymes_test_esm <br>
+                        #SBATCH --account=use300 <br>
+                        #SBATCH --partition=compute <br>
+                        #SBATCH --nodes=1 <br>
+                        #SBATCH --ntasks-per-node=1 <br>
+                        #SBATCH --cpus-per-task=128 <br>
+                        #SBATCH --mem=248G <br>
+                        #SBATCH --time=00:30:00 <br>
+                        #SBATCH --output=%x.o%j.%N <br>
+                         <br>
+                        declare -xr SINGULARITY_MODULE='singularitypro/3.5' <br>
+                        declare -xr SINGULAIRTY_CONTAINER_DIR='/cm/shared/apps/containers/singularity' <br>
+                         <br>
+                        module purge <br>
+                        module load "${SINGULARITY_MODULE}" <br>
+                        module list <br>
+                        printenv <br>
+                        <br>
+                        time -p singularity exec --bind /expanse,/scratch "${SINGULAIRTY_CONTAINER_DIR}/ciml/esm-0.3.1-20210427.sif" python -u run_esm.py </br>
+                        </p>
                     </div>
                 </div>
             </div>
