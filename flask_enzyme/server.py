@@ -40,6 +40,10 @@ def pca():
 def documentation():
     return render_template('doc.html')
 
+@app.route('/predictions')
+def get_results():
+    return render_template('predictions.html')
+
 @app.route('/enzyme/<enzyme_id>', methods=['GET'])
 def enzyme(enzyme_id):
     #do your code here
@@ -47,15 +51,18 @@ def enzyme(enzyme_id):
     print(enzyme_id)
     global current_enzyme_global_data
     print(current_enzyme_global_data)
-    current_enzyme_classification=  current_enzyme_global_data['predict_class'][enzyme_id]
+    current_enzyme_classification = current_enzyme_global_data['predict_class'][enzyme_id]
+    enzyme_confidences = current_enzyme_global_data['prob_class'][enzyme_id]
     print(current_enzyme_classification)
-    return render_template("enzyme.html", current_enzyme_classification=current_enzyme_classification, matrix=matrix)
+    print(matrix.tolist())
+    return render_template("enzyme.html", probabilities=enzyme_confidences, 
+                           current_enzyme_classification=current_enzyme_classification, 
+                           matrix=matrix.tolist())
 
 @app.route('/predict', methods = ['POST'])
 def predict():
     if request.method == 'POST':
         print('post!!')
-
 
     if request.form['model'] == 'ESM':
         class_file = 'enzyme_to_class_esm.json'
@@ -292,7 +299,11 @@ def predict():
     global current_enzyme_global_data
     current_enzyme_global_data = return_json
 
-    return render_template("result.html",result = return_json)
+    output_from_parsed_template = render_template("result.html", result = return_json)
+    with open("./templates/predictions.html", "w") as fh:
+        fh.write(output_from_parsed_template)
+
+    return output_from_parsed_template
 
 def gen_arr(embeddings, seq_id_to_label):
     """
@@ -331,7 +342,6 @@ def pca_visualize_data(npz_file,class_file):
     input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
 
     
-
     print("generating dataframes")
     embed_arr, embed_labels = gen_arr(input_data, lookup_d)
     print("generating PCA")
@@ -381,8 +391,7 @@ def pca_visualize_data(npz_file,class_file):
     file.write(text)
     file.close()
     return
-
-    
+  
 
 app.run(port='1090')
 
