@@ -37,6 +37,8 @@
     <div class="jumbotron text-center" style="margin-bottom:0">
       <h1>Enzyme Page</h1>
       <h2>Predicted Class: {{current_enzyme_classification}}</h2>
+      <h2>F1 Score: {{f1Score}}</h2>
+      <h2>Accuracy: {{accuracy}}</h2>
     </div> 
     <div class="container">
       <div class="row" style="padding: 10px 0px">
@@ -265,7 +267,6 @@
               .attr("class", "y axis")
               .attr("transform", "translate(41," + margin.top + ")")
               .call(yAxis)
-
           }
         </script>
       </div>

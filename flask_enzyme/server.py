@@ -4,6 +4,8 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -19,6 +21,8 @@ app = Flask(__name__)
 
 current_enzyme_global_data = {}
 matrix = []
+f1Score = None
+accuracy = None
 
 @app.route('/')
 def home_page():
@@ -55,9 +59,13 @@ def enzyme(enzyme_id):
     enzyme_confidences = current_enzyme_global_data['prob_class'][enzyme_id]
     print(current_enzyme_classification)
     print(matrix.tolist())
-    return render_template("enzyme.html", probabilities=enzyme_confidences, 
+    return render_template("enzyme.html", 
+                           probabilities=enzyme_confidences, 
                            current_enzyme_classification=current_enzyme_classification, 
-                           matrix=matrix.tolist())
+                           matrix=matrix.tolist(),
+                           f1Score=f1Score, 
+                           accuracy=accuracy)
+
 
 @app.route('/predict', methods = ['POST'])
 def predict():
@@ -138,6 +146,8 @@ def predict():
 
     model_name_formatted = ''
     global matrix
+    global f1Score
+    global accuracy
 
 
     if request.form['down_stream_model'] == 'knn':
@@ -167,6 +177,8 @@ def predict():
 
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
     elif request.form['down_stream_model'] == 'svc':
         print("SVC")
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
@@ -195,6 +207,8 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
         model_name_formatted = 'SVC'
 
@@ -221,6 +235,8 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
 
         model_name_formatted = 'MLP'
@@ -247,6 +263,8 @@ def predict():
         y_pred_classes = gnb.predict(x_test_classes)
         pred_classes = gnb.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
         model_name_formatted = 'Naive Bayes'
     elif request.form['down_stream_model'] == 'dtree':
@@ -273,6 +291,8 @@ def predict():
         pred_classes = clf.predict_proba(x_test_classes)
         model_name_formatted = 'Random Forest'
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
     
 
 
