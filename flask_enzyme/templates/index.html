@@ -20,6 +20,9 @@
                 <a class="nav-link" href="/">Home</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="/upload">Custom Embedding Upload</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="/visualization">Visualization</a>
               </li>
               <li class="nav-item">
@@ -42,7 +45,7 @@
           <p>Our method leverages Bidirectional Encoder Representations from Transformermodels to take protein strings as input and output embeddings.</p>
           <p>To start, please run a batch job on Expanse to convert your fasta file to protein sequence embeddings captured in an npz file. If you do not have an account, please create one through XSEDE User Portal linked here.</p>
         </div>
-      </div>
+      </div>  
       <div>
         <div class="container">
           <table class="table table-striped">
@@ -83,7 +86,23 @@
           </table>
         </div>
       </div>
-        <div id='form'>
+      <div style= "background-color: #DCDCDC;">
+
+        <p>
+            Custom BERT Embedding files (*.npz,*.NPZ) can be uploaded to run the downstream models
+         
+            <form action = "" method = "POST" enctype = "multipart/form-data">
+              <span style="padding-left:25px;"></span>
+       
+        <input type = "file" name = "npzfile" size = "100" class = "button"  z-index="150" placeholder ="Custom.npz">
+               <br><br>
+               <span style="padding-left:200px;"></span> 
+               
+               <input type = "submit" class = "btn btn-success" value = "Upload Now"  style="color:white;background-color:#4CAF50;" >
+       <p>  
+            </form>
+
+        
           <form  action="http://localhost:1090/predict" method = "post">
             <select class="form-select" aria-label="Default select example" name='model'>
               <option selected>Choose Embeddings</option>

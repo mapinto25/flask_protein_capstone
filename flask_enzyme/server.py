@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, session, send_from_directory, send_file
 import pandas as pd
 import numpy as np
 from sklearn.metrics import confusion_matrix
@@ -13,8 +13,15 @@ from sklearn.decomposition import PCA
 import plotly.express as px
 import json
 import sys
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = '/input'
+ALLOWED_EXTENSIONS = set(['npz', 'NPZ'])
+
+#File extension checking
+def allowed_filename(filename):
+	return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
 
 
 current_enzyme_global_data = {}
@@ -55,8 +62,14 @@ def enzyme(enzyme_id):
 def predict():
     if request.method == 'POST':
         print('post!!')
+        if 'npzfile' in request.files:
+            submitted_file = request.files['npzfile']
+            if submitted_file and allowed_filename(submitted_file.filename):
+                filename = secure_filename(submitted_file.filename)
+                submitted_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    #	        flash( 'File %s successfully saved to:  %s' %(filename, str(app.config['UPLOAD_FOLDER'])) )
 
-
+    		
     if request.form['model'] == 'ESM':
         class_file = 'enzyme_to_class_esm.json'
         npz_file = 'esm.npz'
@@ -382,7 +395,12 @@ def pca_visualize_data(npz_file,class_file):
     file.close()
     return
 
-    
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        f = request.files['npzfile']
+        f.save(secure_filename(f.filename))
+        return 'file uploaded successfully'
 
 app.run(port='1090')
 
