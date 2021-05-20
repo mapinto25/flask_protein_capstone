@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+ from sklearn.metrics import f1_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -160,6 +161,7 @@ def predict():
 
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1_score(y_test_true_classes, y_pred_classes, average='macro')
     elif request.form['down_stream_model'] == 'svc':
         print("SVC")
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
@@ -188,6 +190,7 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1_score(y_test_true_classes, y_pred_classes, average='macro')
 
         model_name_formatted = 'SVC'
 
@@ -214,6 +217,7 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1_score(y_test_true_classes, y_pred_classes, average='macro')
 
 
         model_name_formatted = 'MLP'
@@ -240,6 +244,7 @@ def predict():
         y_pred_classes = gnb.predict(x_test_classes)
         pred_classes = gnb.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1_score(y_test_true_classes, y_pred_classes, average='macro')
 
         model_name_formatted = 'Naive Bayes'
     elif request.form['down_stream_model'] == 'dtree':
@@ -265,6 +270,7 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1_score(y_test_true_classes, y_pred_classes, average='macro')
     
 
 
