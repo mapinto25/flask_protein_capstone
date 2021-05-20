@@ -86,29 +86,18 @@
           </table>
         </div>
       </div>
-      <div style= "background-color: #DCDCDC;">
-
         <p>
             Custom BERT Embedding files (*.npz,*.NPZ) can be uploaded to run the downstream models
-         
-            <form action = "" method = "POST" enctype = "multipart/form-data">
-              <span style="padding-left:25px;"></span>
-       
-        <input type = "file" name = "npzfile" size = "100" class = "button"  z-index="150" placeholder ="Custom.npz">
-               <br><br>
-               <span style="padding-left:200px;"></span> 
-               
-               <input type = "submit" class = "btn btn-success" value = "Upload Now"  style="color:white;background-color:#4CAF50;" >
-       <p>  
-            </form>
-
-        
-          <form  action="http://localhost:1090/predict" method = "post">
+         </p>
+            <form action = "/predict" method = "POST" enctype = "multipart/form-data">
+              <input type = "file" name = "npzfile" size = "100" class = "button"  z-index="150" placeholder ="Custom.npz">
+              <input type = "file" name = "jsonfile" size = "100" class = "button"  z-index="150" placeholder ="Custom.json">
             <select class="form-select" aria-label="Default select example" name='model'>
               <option selected>Choose Embeddings</option>
               <option  value="tape">Tape</option>
               <option  value="ESM">ESM</option>
               <option  value="combined">Combined</option>
+              <option  value="custom">Custom</option>
             </select>
             <select class="form-select" aria-label="Default select example" name='down_stream_model'>
               <option selected>Choose Downstream Model</option>
@@ -120,6 +109,5 @@
             </select>
             <button type='submit' class="btn btn-success">Predict!!!</button>
       </form>
-      </div>
     </body>
 </html>

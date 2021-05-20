@@ -13,11 +13,12 @@ from sklearn.decomposition import PCA
 import plotly.express as px
 import json
 import sys
+import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = '/input'
-ALLOWED_EXTENSIONS = set(['npz', 'NPZ'])
+app.config['UPLOAD_FOLDER'] = './input'
+ALLOWED_EXTENSIONS = set(['npz', 'NPZ', 'json', 'JSON'])
 
 #File extension checking
 def allowed_filename(filename):
@@ -62,15 +63,21 @@ def enzyme(enzyme_id):
 def predict():
     if request.method == 'POST':
         print('post!!')
+        custom_file = False
         if 'npzfile' in request.files:
             submitted_file = request.files['npzfile']
             if submitted_file and allowed_filename(submitted_file.filename):
                 filename = secure_filename(submitted_file.filename)
                 submitted_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    #	        flash( 'File %s successfully saved to:  %s' %(filename, str(app.config['UPLOAD_FOLDER'])) )
 
-    		
-    if request.form['model'] == 'ESM':
+        if 'jsonfile' in request.files:
+            submitted_file = request.files['jsonfile']
+            if submitted_file and allowed_filename(submitted_file.filename):
+                json_file_name = secure_filename(submitted_file.filename)
+                submitted_file.save(os.path.join(app.config['UPLOAD_FOLDER'], json_file_name))
+
+
+    if request.form['model'] == 'esm':
         class_file = 'enzyme_to_class_esm.json'
         npz_file = 'esm.npz'
     elif request.form['model'] == 'tape':
@@ -79,6 +86,10 @@ def predict():
     elif request.form['model'] == 'combined':
         class_file = 'combined.json'
         npz_file = 'combined.npz'
+    elif request.form['model'] == 'custom':
+        class_file = json_file_name
+        npz_file = filename
+
 
     embeddings_per_enzyme = {}
     enzyme_list = []
