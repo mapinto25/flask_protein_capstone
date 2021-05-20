@@ -9,6 +9,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
+from sklearn.decomposition import PCA
+import plotly.express as px
 import json
 import sys
 
@@ -16,6 +18,7 @@ app = Flask(__name__)
 
 
 current_enzyme_global_data = {}
+matrix = []
 
 @app.route('/')
 def home_page():
@@ -28,6 +31,10 @@ def bert():
 @app.route('/visualization')
 def visualization():
     return render_template('viz.html')
+
+@app.route('/pca')
+def pca():
+    return render_template('pca.html')
 
 @app.route('/documentation')
 def documentation():
@@ -42,7 +49,7 @@ def enzyme(enzyme_id):
     print(current_enzyme_global_data)
     current_enzyme_classification=  current_enzyme_global_data['predict_class'][enzyme_id]
     print(current_enzyme_classification)
-    return render_template("enzyme.html", current_enzyme_classification=current_enzyme_classification)
+    return render_template("enzyme.html", current_enzyme_classification=current_enzyme_classification, matrix=matrix)
 
 @app.route('/predict', methods = ['POST'])
 def predict():
@@ -60,7 +67,6 @@ def predict():
         class_file = 'combined.json'
         npz_file = 'combined.npz'
 
-    
     embeddings_per_enzyme = {}
     enzyme_list = []
 
@@ -116,26 +122,28 @@ def predict():
     y_train_classes = train[['classes']]
     y_train_enzyme = train[['enzyme_non_enzyme']]
     x_test = list(test['embeddings'])
-    y_test_class = test[['classes']]
+    y_test_class =list(test['classes'])
     y_test_enzyme = test[['enzyme_non_enzyme']]
 
     test_enzyme_list = test['Name'].tolist()
     test_enzyme_list_non_enzyme = []
     test_enzyme_list_is_enzyme = []
 
-
+    model_name_formatted = ''
+    global matrix
 
 
     if request.form['down_stream_model'] == 'knn':
-        print('knn')
         neigh = KNeighborsClassifier(n_neighbors=5)
 
-        print(y_train_enzyme)
         neigh.fit(x_train, y_train_enzyme)
         y_pred_enzyme = neigh.predict(x_test)
         pred_enzyme = neigh.predict_proba(x_test)
 
         x_test_classes = []
+        y_test_true_classes = []
+
+        print(y_test_class)
 
         for i in range(len(y_pred_enzyme)):
             if y_pred_enzyme[i] == 0:
@@ -143,10 +151,15 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
 
         neigh.fit(x_train, y_train_classes)
         y_pred_classes = neigh.predict(x_test_classes)
         pred_classes = neigh.predict_proba(x_test_classes)
+        model_name_formatted = 'KNN'
+
+
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
     elif request.form['down_stream_model'] == 'svc':
         print("SVC")
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
@@ -168,13 +181,18 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         clf.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = clf.predict(x_test_classes)
+        pred_classes = clf.predict_proba(x_test_classes)
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+
+        model_name_formatted = 'SVC'
 
     elif request.form['down_stream_model'] == 'deep_learning':
-        clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,)).fit(x_train, y_train)
+        clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
         clf.fit(x_train,y_train_enzyme)
         y_pred_enzyme = clf.predict(x_test)
         pred_enzyme = clf.predict_proba(x_test)
@@ -189,15 +207,21 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         clf.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = clf.predict(x_test_classes)
+        pred_classes = clf.predict_proba(x_test_classes)
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+
+
+        model_name_formatted = 'MLP'
     elif request.form['down_stream_model'] == 'naive':
         gnb = GaussianNB()
         gnb.fit(x_train,y_train_enzyme)
-        y_pred_enzyme = clf.predict(x_test)
-        pred_enzyme = clf.predict_proba(x_test)
+        y_pred_enzyme = gnb.predict(x_test)
+        pred_enzyme = gnb.predict_proba(x_test)
 
 
 
@@ -209,10 +233,15 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         gnb.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = gnb.predict(x_test_classes)
+        pred_classes = gnb.predict_proba(x_test_classes)
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+
+        model_name_formatted = 'Naive Bayes'
     elif request.form['down_stream_model'] == 'dtree':
         clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
         clf.fit(x_train,y_train_enzyme)
@@ -229,13 +258,18 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         clf.fit(x_train, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
+        y_pred_classes = clf.predict(x_test_classes)
+        pred_classes = clf.predict_proba(x_test_classes)
+        model_name_formatted = 'Random Forest'
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
     
 
 
+    pca_visualize_data(npz_file,class_file)
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -253,11 +287,102 @@ def predict():
         current_enzyme =  test_enzyme_list_non_enzyme[i]
         return_json['prob_enzyme'][current_enzyme] = pred_enzyme[i]
         return_json['predict_class'][current_enzyme] = y_pred_classes[i]
+    return_json['model'] = model_name_formatted
 
     global current_enzyme_global_data
     current_enzyme_global_data = return_json
 
     return render_template("result.html",result = return_json)
+
+def gen_arr(embeddings, seq_id_to_label):
+    """
+    Iterate over all of the sequence IDs in the given subset of the dataset (embeddings),
+    as a nested numpy array. Produce a numpy array of the average embeddings for each
+    sequence, as will a list of the labels by looking up the sequence IDs in seq_id_to_label
+    Args:
+        embeddings (numpy.lib.npyio.NpzFile): Nested numpy array containing embeddings for each sequence ID
+        seq_id_to_label (dict[str,str]): Map from sequence ID to classification label
+    Returns:
+        output (np.array): Average embeddings for each sequence
+        labels (list[str])
+    """
+    keys = embeddings.files
+    output, labels = [], []
+    for key in keys:
+        d = embeddings[key].item()["avg"]
+        labels.append(seq_id_to_label[key])
+        output.append(d)
+    return np.array(output), labels
+
+def pca_visualize_data(npz_file,class_file):
+    """
+    Prepare and render an interactive plotly PCA visualization given the following:
+        * n_components: Number of PCA components (must be 2 or 3)
+        * targets: Labels file
+        * input_data: gzipped npz file with sequence embeddings
+    """
+    
+    n_components = 3
+
+    #load labels file
+    lookup_d = json.load(open(f'./input/{class_file}'))
+
+    #load npz file
+    input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
+
+    
+
+    print("generating dataframes")
+    embed_arr, embed_labels = gen_arr(input_data, lookup_d)
+    print("generating PCA")
+    pca = PCA(n_components=3)
+    principal_components = pca.fit_transform(embed_arr)
+    principal_df = pd.DataFrame(
+        data=principal_components, columns=["pc1", "pc2", "pc3"]
+    )
+    principal_df["target"] = embed_labels
+    print("generating plot")
+
+    # Adjust PCA according to the number of components
+    if n_components == 3:
+        fig = px.scatter_3d(
+            principal_df,
+            x="pc1",
+            y="pc2",
+            z="pc3",
+            color="target",
+            color_discrete_sequence=px.colors.qualitative.G10,
+        )
+    if n_components == 2:
+        fig = px.scatter(
+            principal_df,
+            x="pc1",
+            y="pc2",
+            color="target",
+            color_discrete_sequence=px.colors.qualitative.G10,
+        )
+
+    fig.update_layout(
+    height=800,
+    title_text='PCA Enzyme Data'
+    )
+    
+    fig.write_html("templates/pca.html")
+
+    text = '''
+    <html>
+        <body>
+            <h1><a href='/'>Home</a></h1>
+        </body>
+    </html>
+    '''
+
+    file = open("templates/pca.html","a")
+    file.write(text)
+    file.close()
+    return
+
+    
 
 app.run(port='1090')
 
