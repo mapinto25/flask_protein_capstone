@@ -18,6 +18,7 @@ app = Flask(__name__)
 
 
 current_enzyme_global_data = {}
+matrix = []
 
 @app.route('/')
 def home_page():
@@ -48,7 +49,7 @@ def enzyme(enzyme_id):
     print(current_enzyme_global_data)
     current_enzyme_classification=  current_enzyme_global_data['predict_class'][enzyme_id]
     print(current_enzyme_classification)
-    return render_template("enzyme.html", current_enzyme_classification=current_enzyme_classification)
+    return render_template("enzyme.html", current_enzyme_classification=current_enzyme_classification, matrix=matrix)
 
 @app.route('/predict', methods = ['POST'])
 def predict():
@@ -121,7 +122,7 @@ def predict():
     y_train_classes = train[['classes']]
     y_train_enzyme = train[['enzyme_non_enzyme']]
     x_test = list(test['embeddings'])
-    y_test_class = test[['classes']]
+    y_test_class =list(test['classes'])
     y_test_enzyme = test[['enzyme_non_enzyme']]
 
     test_enzyme_list = test['Name'].tolist()
@@ -129,18 +130,20 @@ def predict():
     test_enzyme_list_is_enzyme = []
 
     model_name_formatted = ''
+    global matrix
 
 
     if request.form['down_stream_model'] == 'knn':
-        print('knn')
         neigh = KNeighborsClassifier(n_neighbors=5)
 
-        print(y_train_enzyme)
         neigh.fit(x_train, y_train_enzyme)
         y_pred_enzyme = neigh.predict(x_test)
         pred_enzyme = neigh.predict_proba(x_test)
 
         x_test_classes = []
+        y_test_true_classes = []
+
+        print(y_test_class)
 
         for i in range(len(y_pred_enzyme)):
             if y_pred_enzyme[i] == 0:
@@ -148,11 +151,15 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
 
         neigh.fit(x_train, y_train_classes)
         y_pred_classes = neigh.predict(x_test_classes)
         pred_classes = neigh.predict_proba(x_test_classes)
         model_name_formatted = 'KNN'
+
+
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
     elif request.form['down_stream_model'] == 'svc':
         print("SVC")
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
@@ -174,10 +181,13 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         clf.fit(x_train, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
 
         model_name_formatted = 'SVC'
 
@@ -197,10 +207,13 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         clf.fit(x_train, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
 
 
         model_name_formatted = 'MLP'
@@ -220,10 +233,13 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         gnb.fit(x_train, y_train_classes)
         y_pred_classes = gnb.predict(x_test_classes)
         pred_classes = gnb.predict_proba(x_test_classes)
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
 
         model_name_formatted = 'Naive Bayes'
     elif request.form['down_stream_model'] == 'dtree':
@@ -242,11 +258,14 @@ def predict():
             if y_pred_enzyme[i] == 1:
                 test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+
 
         clf.fit(x_train, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         model_name_formatted = 'Random Forest'
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
     
 
 
