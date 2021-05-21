@@ -406,13 +406,6 @@ def pca_visualize_data(npz_file,class_file):
     file.close()
     return
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        f = request.files['npzfile']
-        f.save(secure_filename(f.filename))
-        return 'file uploaded successfully'
-
 app.run(port='1090')
 
 
