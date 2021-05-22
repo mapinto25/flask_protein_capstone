@@ -4,6 +4,8 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -27,6 +29,8 @@ def allowed_filename(filename):
 
 current_enzyme_global_data = {}
 matrix = []
+f1Score = None
+accuracy = None
 
 @app.route('/')
 def home_page():
@@ -48,6 +52,10 @@ def pca():
 def documentation():
     return render_template('doc.html')
 
+@app.route('/predictions')
+def get_results():
+    return render_template('predictions.html')
+
 @app.route('/enzyme/<enzyme_id>', methods=['GET'])
 def enzyme(enzyme_id):
     #do your code here
@@ -55,9 +63,17 @@ def enzyme(enzyme_id):
     print(enzyme_id)
     global current_enzyme_global_data
     print(current_enzyme_global_data)
-    current_enzyme_classification=  current_enzyme_global_data['predict_class'][enzyme_id]
+    current_enzyme_classification = current_enzyme_global_data['predict_class'][enzyme_id]
+    enzyme_confidences = current_enzyme_global_data['prob_class'][enzyme_id]
     print(current_enzyme_classification)
-    return render_template("enzyme.html", current_enzyme_classification=current_enzyme_classification, matrix=matrix)
+    print(matrix.tolist())
+    return render_template("enzyme.html", 
+                           probabilities=enzyme_confidences, 
+                           current_enzyme_classification=current_enzyme_classification, 
+                           matrix=matrix.tolist(),
+                           f1Score=f1Score, 
+                           accuracy=accuracy)
+
 
 @app.route('/predict', methods = ['POST'])
 def predict():
@@ -77,7 +93,7 @@ def predict():
                 submitted_file.save(os.path.join(app.config['UPLOAD_FOLDER'], json_file_name))
 
 
-    if request.form['model'] == 'esm':
+    if request.form['model'] == 'ESM':
         class_file = 'enzyme_to_class_esm.json'
         npz_file = 'esm.npz'
     elif request.form['model'] == 'tape':
@@ -155,6 +171,8 @@ def predict():
 
     model_name_formatted = ''
     global matrix
+    global f1Score
+    global accuracy
 
 
     if request.form['down_stream_model'] == 'knn':
@@ -184,6 +202,8 @@ def predict():
 
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
     elif request.form['down_stream_model'] == 'svc':
         print("SVC")
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
@@ -212,6 +232,8 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
         model_name_formatted = 'SVC'
 
@@ -238,6 +260,8 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
 
         model_name_formatted = 'MLP'
@@ -264,6 +288,8 @@ def predict():
         y_pred_classes = gnb.predict(x_test_classes)
         pred_classes = gnb.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
         model_name_formatted = 'Naive Bayes'
     elif request.form['down_stream_model'] == 'dtree':
@@ -290,6 +316,8 @@ def predict():
         pred_classes = clf.predict_proba(x_test_classes)
         model_name_formatted = 'Random Forest'
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
     
 
 
@@ -316,7 +344,11 @@ def predict():
     global current_enzyme_global_data
     current_enzyme_global_data = return_json
 
-    return render_template("result.html",result = return_json)
+    output_from_parsed_template = render_template("result.html", result = return_json)
+    with open("./templates/predictions.html", "w") as fh:
+        fh.write(output_from_parsed_template)
+
+    return output_from_parsed_template
 
 def gen_arr(embeddings, seq_id_to_label):
     """
@@ -355,7 +387,6 @@ def pca_visualize_data(npz_file,class_file):
     input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
 
     
-
     print("generating dataframes")
     embed_arr, embed_labels = gen_arr(input_data, lookup_d)
     print("generating PCA")
@@ -405,6 +436,7 @@ def pca_visualize_data(npz_file,class_file):
     file.write(text)
     file.close()
     return
+  
 
 app.run(port='1090')
 
