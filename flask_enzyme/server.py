@@ -218,6 +218,7 @@ def predict():
 
 
         x_test_classes = []
+        y_test_true_classes = []
 
         for i in range(len(y_pred_enzyme)):
             if y_pred_enzyme[i] == 0:
@@ -246,6 +247,7 @@ def predict():
 
 
         x_test_classes = []
+        y_test_true_classes = []
 
         for i in range(len(y_pred_enzyme)):
             if y_pred_enzyme[i] == 0:
@@ -274,6 +276,7 @@ def predict():
 
 
         x_test_classes = []
+        y_test_true_classes = []
 
         for i in range(len(y_pred_enzyme)):
             if y_pred_enzyme[i] == 0:
@@ -301,6 +304,7 @@ def predict():
 
 
         x_test_classes = []
+        y_test_true_classes = []
 
         for i in range(len(y_pred_enzyme)):
             if y_pred_enzyme[i] == 0:
