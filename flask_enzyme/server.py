@@ -129,7 +129,10 @@ def predict():
 
 
     for enzyme in enzyme_list:
-        class_list.append(enzyme_to_class[enzyme])
+        temp_enzyme_class = enzyme_to_class[enzyme]
+        if temp_enzyme_class == '0':
+            temp_enzyme_class = 'NA'
+        class_list.append(temp_enzyme_class)
 
     all_data['classes'] = class_list
 
@@ -138,7 +141,7 @@ def predict():
 
     for enzyme in enzyme_list:
         current_class = enzyme_to_class[enzyme]
-        if current_class == 0:
+        if current_class == '0':
             enzyme_non_enzyme.append(0)
         else:
             enzyme_non_enzyme.append(1)
@@ -177,153 +180,218 @@ def predict():
 
     if request.form['down_stream_model'] == 'knn':
         neigh = KNeighborsClassifier(n_neighbors=5)
-
         neigh.fit(x_train, y_train_enzyme)
         y_pred_enzyme = neigh.predict(x_test)
         pred_enzyme = neigh.predict_proba(x_test)
 
         x_test_classes = []
         y_test_true_classes = []
+        x_train_classes = []
 
-        print(y_test_class)
 
+        i = 0
+        for index, row in y_train_classes.iterrows():
+           if row['classes'] != 'NA':
+               x_train_classes.append(x_train[i])
+           i += 1
+
+
+        test_enzyme_list_is_enzyme = []
         for i in range(len(y_pred_enzyme)):
-            if y_pred_enzyme[i] == 0:
-                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
             if y_pred_enzyme[i] == 1:
-                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
                 y_test_true_classes.append(y_test_class[i])
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+            else:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
 
-        neigh.fit(x_train, y_train_classes)
+
+
+        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+
+
+        neigh = KNeighborsClassifier(n_neighbors=5)
+        neigh.fit(x_train_classes, y_train_classes)
         y_pred_classes = neigh.predict(x_test_classes)
         pred_classes = neigh.predict_proba(x_test_classes)
         model_name_formatted = 'KNN'
 
-
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
         f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
         accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+
     elif request.form['down_stream_model'] == 'svc':
         print("SVC")
+
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto')
-        print(y_train_enzyme)
 
-
-
-        clf.fit(x_train,y_train_enzyme)
+        clf.fit(x_train, y_train_enzyme)
         y_pred_enzyme = clf.predict(x_test)
         pred_enzyme = clf.predict_proba(x_test)
 
-
-
         x_test_classes = []
         y_test_true_classes = []
+        x_train_classes = []
 
+
+        i = 0
+        for index, row in y_train_classes.iterrows():
+           if row['classes'] != 'NA':
+               x_train_classes.append(x_train[i])
+           i += 1
+
+
+        test_enzyme_list_is_enzyme = []
         for i in range(len(y_pred_enzyme)):
-            if y_pred_enzyme[i] == 0:
-                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
             if y_pred_enzyme[i] == 1:
-                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
                 y_test_true_classes.append(y_test_class[i])
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+            else:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
 
 
-        clf.fit(x_train, y_train_classes)
+
+        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+    
+        clf.fit(x_train_classes, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
-        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
-        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
-
         model_name_formatted = 'SVC'
 
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+
+
     elif request.form['down_stream_model'] == 'deep_learning':
+
         clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
-        clf.fit(x_train,y_train_enzyme)
+
+        clf.fit(x_train, y_train_enzyme)
         y_pred_enzyme = clf.predict(x_test)
         pred_enzyme = clf.predict_proba(x_test)
 
-
-
         x_test_classes = []
         y_test_true_classes = []
+        x_train_classes = []
 
+
+        i = 0
+        for index, row in y_train_classes.iterrows():
+           if row['classes'] != 'NA':
+               x_train_classes.append(x_train[i])
+           i += 1
+
+
+        test_enzyme_list_is_enzyme = []
         for i in range(len(y_pred_enzyme)):
-            if y_pred_enzyme[i] == 0:
-                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
             if y_pred_enzyme[i] == 1:
-                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
                 y_test_true_classes.append(y_test_class[i])
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+            else:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
 
 
-        clf.fit(x_train, y_train_classes)
+
+        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+    
+        clf.fit(x_train_classes, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
-        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
-        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
-
-
         model_name_formatted = 'MLP'
-    elif request.form['down_stream_model'] == 'naive':
-        gnb = GaussianNB()
-        gnb.fit(x_train,y_train_enzyme)
-        y_pred_enzyme = gnb.predict(x_test)
-        pred_enzyme = gnb.predict_proba(x_test)
 
-
-
-        x_test_classes = []
-        y_test_true_classes = []
-
-        for i in range(len(y_pred_enzyme)):
-            if y_pred_enzyme[i] == 0:
-                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
-            if y_pred_enzyme[i] == 1:
-                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
-                x_test_classes.append(x_test[i])
-                y_test_true_classes.append(y_test_class[i])
-
-
-        gnb.fit(x_train, y_train_classes)
-        y_pred_classes = gnb.predict(x_test_classes)
-        pred_classes = gnb.predict_proba(x_test_classes)
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
         f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
         accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
-        model_name_formatted = 'Naive Bayes'
-    elif request.form['down_stream_model'] == 'dtree':
-        clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
-        clf.fit(x_train,y_train_enzyme)
+
+
+    elif request.form['down_stream_model'] == 'naive':
+
+        clf =  GaussianNB()
+
+        clf.fit(x_train, y_train_enzyme)
         y_pred_enzyme = clf.predict(x_test)
         pred_enzyme = clf.predict_proba(x_test)
 
+        x_test_classes = []
+        y_test_true_classes = []
+        x_train_classes = []
 
+
+        i = 0
+        for index, row in y_train_classes.iterrows():
+           if row['classes'] != 'NA':
+               x_train_classes.append(x_train[i])
+           i += 1
+
+
+        test_enzyme_list_is_enzyme = []
+        for i in range(len(y_pred_enzyme)):
+            if y_pred_enzyme[i] == 1:
+                x_test_classes.append(x_test[i])
+                y_test_true_classes.append(y_test_class[i])
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+            else:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
+
+
+
+        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+    
+        clf.fit(x_train_classes, y_train_classes)
+        y_pred_classes = clf.predict(x_test_classes)
+        pred_classes = clf.predict_proba(x_test_classes)
+        model_name_formatted = 'Naive Bayes'
+
+        matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
+        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
+        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+
+    elif request.form['down_stream_model'] == 'dtree':
+
+
+        clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
+
+        clf.fit(x_train, y_train_enzyme)
+        y_pred_enzyme = clf.predict(x_test)
+        pred_enzyme = clf.predict_proba(x_test)
 
         x_test_classes = []
         y_test_true_classes = []
+        x_train_classes = []
 
+
+        i = 0
+        for index, row in y_train_classes.iterrows():
+           if row['classes'] != 'NA':
+               x_train_classes.append(x_train[i])
+           i += 1
+
+
+        test_enzyme_list_is_enzyme = []
         for i in range(len(y_pred_enzyme)):
-            if y_pred_enzyme[i] == 0:
-                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
             if y_pred_enzyme[i] == 1:
-                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
                 x_test_classes.append(x_test[i])
                 y_test_true_classes.append(y_test_class[i])
+                test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
+            else:
+                test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
 
 
-        clf.fit(x_train, y_train_classes)
+
+        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+    
+        clf.fit(x_train_classes, y_train_classes)
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
         model_name_formatted = 'Random Forest'
+
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
         f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
         accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
-    
-
 
     pca_visualize_data(npz_file,class_file)
     return_json = {}
@@ -342,7 +410,11 @@ def predict():
     for i in range(len(test_enzyme_list_non_enzyme)):
         current_enzyme =  test_enzyme_list_non_enzyme[i]
         return_json['prob_enzyme'][current_enzyme] = pred_enzyme[i]
-        return_json['predict_class'][current_enzyme] = y_pred_classes[i]
+        return_json['predict_class'][current_enzyme] = y_pred_enzyme[i]
+    
+    
+    
+    
     return_json['model'] = model_name_formatted
 
     global current_enzyme_global_data
