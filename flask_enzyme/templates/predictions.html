@@ -50,6 +50,7 @@
     </nav>
     <div class="jumbotron text-center" style="margin-bottom:0">
       <h1>Results For Model KNN</h1>
+       </form>
     </div>
 
     <div class="container">
@@ -66,6 +67,10 @@
              aria-selected="true"
              >Enzyme Results</a
            >
+           <form action = "/getEnzCsv" method = "POST" enctype = "multipart/form-data">
+            <button type='submit' class="btn btn-success">Download Enzyme Results</button>
+            
+           </form>
          </li>
          <li class="nav-item" role="presentation">
            <a
@@ -78,6 +83,10 @@
              aria-selected="false"
              >Non Enzyme Results</a
            >
+           <form action = "/getNonEnzCsv" method = "POST" enctype = "multipart/form-data">
+            <button type='submit' class="btn btn-success">Download Non-Enzyme Results</button>
+            
+           </form>
          </li>
        </ul>
        <!-- Tabs navs -->
@@ -107,37 +116,57 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY20337">ENZY20337<a></th>
+                <th><a href="/enzyme/ENZY21499">ENZY21499<a></th>
+                  <td>6</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY5280">ENZY5280<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY18813">ENZY18813<a></th>
                   <td>3</td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY10020">ENZY10020<a></th>
-                  <td>2</td>
+                   <td> 0.6 </td>
                   
                    <td> 0.4 </td>
                   
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
@@ -147,27 +176,7 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY16363">ENZY16363<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY1753">ENZY1753<a></th>
+                <th><a href="/enzyme/ENZY1669">ENZY1669<a></th>
                   <td>1</td>
                   
                    <td> 0.6 </td>
@@ -187,67 +196,7 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY7790">ENZY7790<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY9785">ENZY9785<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY286">ENZY286<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY21893">ENZY21893<a></th>
+                <th><a href="/enzyme/ENZY11763">ENZY11763<a></th>
                   <td>2</td>
                   
                    <td> 0.0 </td>
@@ -267,236 +216,16 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY10153">ENZY10153<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY795">ENZY795<a></th>
-                  <td>1</td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY16124">ENZY16124<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY16316">ENZY16316<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY14585">ENZY14585<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY18227">ENZY18227<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY10123">ENZY10123<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY7226">ENZY7226<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY10042">ENZY10042<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY12837">ENZY12837<a></th>
+                <th><a href="/enzyme/ENZY2152">ENZY2152<a></th>
                   <td>2</td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.4 </td>
                   
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
                    <td> 0.2 </td>
                   
-                   <td> 0.4 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4154">ENZY4154<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY5066">ENZY5066<a></th>
-                  <td>2</td>
-                  
                    <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
                   
                    <td> 0.2 </td>
                   
@@ -507,38 +236,118 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY1059">ENZY1059<a></th>
-                  <td>1</td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY16397">ENZY16397<a></th>
+                <th><a href="/enzyme/ENZY19873">ENZY19873<a></th>
                   <td>5</td>
                   
                    <td> 0.0 </td>
                   
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY4464">ENZY4464<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY10135">ENZY10135<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
                    <td> 0.2 </td>
                   
                    <td> 0.0 </td>
                   
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY11852">ENZY11852<a></th>
+                  <td>2</td>
+                  
                    <td> 0.0 </td>
                   
                    <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY2942">ENZY2942<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY21757">ENZY21757<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
                   
                    <td> 0.4 </td>
                   
@@ -547,16 +356,476 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY17788">ENZY17788<a></th>
+                <th><a href="/enzyme/ENZY10243">ENZY10243<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY14895">ENZY14895<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7371">ENZY7371<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16497">ENZY16497<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY18869">ENZY18869<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY19723">ENZY19723<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16155">ENZY16155<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY10547">ENZY10547<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY3665">ENZY3665<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY6136">ENZY6136<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY21680">ENZY21680<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY9598">ENZY9598<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY21408">ENZY21408<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY1892">ENZY1892<a></th>
+                  <td>1</td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY9751">ENZY9751<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY959">ENZY959<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY17864">ENZY17864<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY1189">ENZY1189<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7731">ENZY7731<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY17401">ENZY17401<a></th>
+                  <td>6</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY3702">ENZY3702<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16434">ENZY16434<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY4357">ENZY4357<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY18172">ENZY18172<a></th>
                   <td>4</td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.4 </td>
+                   <td> 0.0 </td>
                   
-                   <td> 0.6 </td>
+                   <td> 1.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -567,7 +836,47 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY1292">ENZY1292<a></th>
+                <th><a href="/enzyme/ENZY9849">ENZY9849<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7814">ENZY7814<a></th>
+                  <td>6</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY2566">ENZY2566<a></th>
                   <td>1</td>
                   
                    <td> 1.0 </td>
@@ -575,6 +884,246 @@
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY14507">ENZY14507<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY20554">ENZY20554<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY11012">ENZY11012<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY20002">ENZY20002<a></th>
+                  <td>4</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY20767">ENZY20767<a></th>
+                  <td>6</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.8 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY15225">ENZY15225<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY3323">ENZY3323<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY15074">ENZY15074<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY1443">ENZY1443<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16416">ENZY16416<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY546">ENZY546<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY15655">ENZY15655<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.8 </td>
                   
                    <td> 0.0 </td>
                   
@@ -607,18 +1156,38 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY11350">ENZY11350<a></th>
+                <th><a href="/enzyme/ENZY5171">ENZY5171<a></th>
                   <td>2</td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.6 </td>
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
                   
                    <td> 0.2 </td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY3696">ENZY3696<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
                   
                    <td> 0.2 </td>
                   
@@ -627,10 +1196,88 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY16674">ENZY16674<a></th>
+                <th><a href="/enzyme/ENZY12568">ENZY12568<a></th>
+                  <td>6</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16449">ENZY16449<a></th>
                   <td>3</td>
                   
                    <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY17008">ENZY17008<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY10017">ENZY10017<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY6842">ENZY6842<a></th>
+                  <td>2</td>
                   
                    <td> 0.0 </td>
                   
@@ -642,24 +1289,6 @@
                   
                    <td> 0.0 </td>
                   
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY3634">ENZY3634<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
                    <td> 0.0 </td>
                   
                </tr>
@@ -667,28 +1296,10 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY15852">ENZY15852<a></th>
+                <th><a href="/enzyme/ENZY12721">ENZY12721<a></th>
                   <td>3</td>
                   
                    <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4181">ENZY4181<a></th>
-                  <td>2</td>
                   
                    <td> 0.0 </td>
                   
@@ -700,6 +1311,24 @@
                   
                    <td> 0.2 </td>
                   
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY1559">ENZY1559<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
                    <td> 0.0 </td>
                   
                </tr>
@@ -707,18 +1336,58 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY19532">ENZY19532<a></th>
+                <th><a href="/enzyme/ENZY1292">ENZY1292<a></th>
+                  <td>1</td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY10123">ENZY10123<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7721">ENZY7721<a></th>
                   <td>2</td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.4 </td>
+                   <td> 1.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -727,7 +1396,7 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY150">ENZY150<a></th>
+                <th><a href="/enzyme/ENZY20377">ENZY20377<a></th>
                   <td>1</td>
                   
                    <td> 0.4 </td>
@@ -736,46 +1405,6 @@
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4867">ENZY4867<a></th>
-                  <td>5</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY17">ENZY17<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
                    <td> 0.0 </td>
                   
                    <td> 0.2 </td>
@@ -787,76 +1416,36 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY20640">ENZY20640<a></th>
-                  <td>6</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY14562">ENZY14562<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY21460">ENZY21460<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4917">ENZY4917<a></th>
+                <th><a href="/enzyme/ENZY15165">ENZY15165<a></th>
                   <td>2</td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.4 </td>
                   
+                   <td> 0.4 </td>
+                  
                    <td> 0.2 </td>
                   
                    <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16308">ENZY16308<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
                   
                    <td> 0.4 </td>
                   
@@ -867,92 +1456,52 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY17979">ENZY17979<a></th>
+                <th><a href="/enzyme/ENZY18538">ENZY18538<a></th>
                   <td>4</td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6558">ENZY6558<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY7950">ENZY7950<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY526">ENZY526<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY15986">ENZY15986<a></th>
-                  <td>1</td>
-                  
                    <td> 0.4 </td>
                   
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY9645">ENZY9645<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
                    <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7852">ENZY7852<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
                   
                    <td> 0.2 </td>
                   
@@ -967,71 +1516,29 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY15855">ENZY15855<a></th>
+                <th><a href="/enzyme/ENZY21285">ENZY21285<a></th>
                   <td>6</td>
                   
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
                    <td> 0.0 </td>
                   
                    <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
                   
                </tr>
            
                
          
                <tr>
-                <th><a href="/enzyme/ENZY848">ENZY848<a></th>
+                <th><a href="/enzyme/ENZY8">ENZY8<a></th>
                   <td>1</td>
                   
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4302">ENZY4302<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY3563">ENZY3563<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
                    <td> 1.0 </td>
                   
                    <td> 0.0 </td>
@@ -1042,21 +1549,23 @@
                   
                    <td> 0.0 </td>
                   
+                   <td> 0.0 </td>
+                  
                </tr>
            
                
          
                <tr>
-                <th><a href="/enzyme/ENZY16274">ENZY16274<a></th>
+                <th><a href="/enzyme/ENZY28">ENZY28<a></th>
                   <td>1</td>
                   
-                   <td> 0.4 </td>
+                   <td> 1.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -1067,30 +1576,8 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY856">ENZY856<a></th>
+                <th><a href="/enzyme/ENZY6603">ENZY6603<a></th>
                   <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY13604">ENZY13604<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -1102,24 +1589,6 @@
                   
                    <td> 0.0 </td>
                   
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY9598">ENZY9598<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
                    <td> 0.0 </td>
                   
                </tr>
@@ -1127,38 +1596,18 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY4910">ENZY4910<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY13512">ENZY13512<a></th>
+                <th><a href="/enzyme/ENZY1530">ENZY1530<a></th>
                   <td>3</td>
                   
-                   <td> 0.0 </td>
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
+                   <td> 0.2 </td>
                   
                    <td> 0.0 </td>
                   
@@ -1167,15 +1616,35 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY6380">ENZY6380<a></th>
+                <th><a href="/enzyme/ENZY3044">ENZY3044<a></th>
                   <td>3</td>
                   
-                   <td> 0.0 </td>
+                   <td> 0.2 </td>
                   
                    <td> 0.2 </td>
                   
                    <td> 0.6 </td>
                   
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY4427">ENZY4427<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
                    <td> 0.2 </td>
                   
                    <td> 0.0 </td>
@@ -1187,16 +1656,16 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY15780">ENZY15780<a></th>
-                  <td>3</td>
+                <th><a href="/enzyme/ENZY4546">ENZY4546<a></th>
+                  <td>2</td>
                   
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
+                   <td> 0.2 </td>
                   
                    <td> 0.8 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -1207,7 +1676,67 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY21522">ENZY21522<a></th>
+                <th><a href="/enzyme/ENZY7730">ENZY7730<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY5985">ENZY5985<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY179">ENZY179<a></th>
+                  <td>1</td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY15786">ENZY15786<a></th>
                   <td>6</td>
                   
                    <td> 0.0 </td>
@@ -1216,451 +1745,11 @@
                   
                    <td> 0.2 </td>
                   
-                   <td> 0.0 </td>
-                  
                    <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY19751">ENZY19751<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY12436">ENZY12436<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.4 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY9434">ENZY9434<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6250">ENZY6250<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4825">ENZY4825<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY17971">ENZY17971<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY2861">ENZY2861<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY3480">ENZY3480<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY13724">ENZY13724<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY21723">ENZY21723<a></th>
-                  <td>6</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY15951">ENZY15951<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6772">ENZY6772<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY11930">ENZY11930<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY13294">ENZY13294<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY15242">ENZY15242<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY7285">ENZY7285<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY3790">ENZY3790<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6235">ENZY6235<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6807">ENZY6807<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6732">ENZY6732<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY11460">ENZY11460<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4791">ENZY4791<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
                   
                </tr>
            
@@ -1687,250 +1776,10 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY1896">ENZY1896<a></th>
-                  <td>1</td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4527">ENZY4527<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY14879">ENZY14879<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY3696">ENZY3696<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY308">ENZY308<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY5340">ENZY5340<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY3699">ENZY3699<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY18634">ENZY18634<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY2688">ENZY2688<a></th>
-                  <td>1</td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY4979">ENZY4979<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY1504">ENZY1504<a></th>
+                <th><a href="/enzyme/ENZY12976">ENZY12976<a></th>
                   <td>3</td>
                   
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
                    <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY18614">ENZY18614<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY15444">ENZY15444<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.2 </td>
                   
                    <td> 0.2 </td>
                   
@@ -1940,126 +1789,6 @@
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY5900">ENZY5900<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY20077">ENZY20077<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY19551">ENZY19551<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY3787">ENZY3787<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY11044">ENZY11044<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY18081">ENZY18081<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
                    <td> 0.2 </td>
                   
                </tr>
@@ -2067,97 +1796,157 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY1912">ENZY1912<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6446">ENZY6446<a></th>
-                  <td>6</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY17783">ENZY17783<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY16244">ENZY16244<a></th>
+                <th><a href="/enzyme/ENZY16683">ENZY16683<a></th>
                   <td>3</td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY4486">ENZY4486<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY15690">ENZY15690<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY17881">ENZY17881<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY313">ENZY313<a></th>
+                  <td>4</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY6590">ENZY6590<a></th>
+                  <td>1</td>
+                  
                    <td> 0.4 </td>
                   
                    <td> 0.2 </td>
                   
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY19718">ENZY19718<a></th>
+                  <td>5</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY21977">ENZY21977<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
                    <td> 0.4 </td>
                   
                    <td> 0.0 </td>
                   
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6688">ENZY6688<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
@@ -2167,14 +1956,34 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY3348">ENZY3348<a></th>
+                <th><a href="/enzyme/ENZY17862">ENZY17862<a></th>
                   <td>2</td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 1.0 </td>
+                   <td> 0.4 </td>
                   
                    <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY15501">ENZY15501<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.4 </td>
                   
                    <td> 0.0 </td>
                   
@@ -2207,114 +2016,54 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY20587">ENZY20587<a></th>
+                <th><a href="/enzyme/ENZY4069">ENZY4069<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16466">ENZY16466<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY20640">ENZY20640<a></th>
                   <td>6</td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
                    <td> 0.0 </td>
                   
                    <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY12129">ENZY12129<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY941">ENZY941<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY2843">ENZY2843<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY12450">ENZY12450<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.6 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY20995">ENZY20995<a></th>
-                  <td>6</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -2327,98 +2076,58 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY13261">ENZY13261<a></th>
-                  <td>1</td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY6840">ENZY6840<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY19138">ENZY19138<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY15479">ENZY15479<a></th>
+                <th><a href="/enzyme/ENZY16127">ENZY16127<a></th>
                   <td>3</td>
                   
                    <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 1.0 </td>
+                   <td> 0.6 </td>
+                  
+                   <td> 0.2 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
+                   <td> 0.2 </td>
                   
                </tr>
            
                
          
                <tr>
-                <th><a href="/enzyme/ENZY929">ENZY929<a></th>
-                  <td>1</td>
+                <th><a href="/enzyme/ENZY1519">ENZY1519<a></th>
+                  <td>4</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
                   
                    <td> 0.4 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.4 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY16139">ENZY16139<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.4 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -2427,48 +2136,10 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY10201">ENZY10201<a></th>
+                <th><a href="/enzyme/ENZY19764">ENZY19764<a></th>
                   <td>2</td>
                   
                    <td> 0.0 </td>
-                  
-                   <td> 1.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY13333">ENZY13333<a></th>
-                  <td>3</td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.8 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY7931">ENZY7931<a></th>
-                  <td>1</td>
                   
                    <td> 0.6 </td>
                   
@@ -2480,23 +2151,21 @@
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.0 </td>
-                  
                </tr>
            
                
          
                <tr>
-                <th><a href="/enzyme/ENZY18140">ENZY18140<a></th>
-                  <td>2</td>
-                  
-                   <td> 0.0 </td>
+                <th><a href="/enzyme/ENZY1476">ENZY1476<a></th>
+                  <td>1</td>
                   
                    <td> 0.6 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.4 </td>
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
                   
                    <td> 0.0 </td>
                   
@@ -2507,16 +2176,16 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY18916">ENZY18916<a></th>
+                <th><a href="/enzyme/ENZY7408">ENZY7408<a></th>
                   <td>5</td>
                   
                    <td> 0.2 </td>
                   
-                   <td> 0.0 </td>
-                  
-                   <td> 0.0 </td>
-                  
                    <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
                   
                    <td> 0.4 </td>
                   
@@ -2527,48 +2196,250 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY11683">ENZY11683<a></th>
+                <th><a href="/enzyme/ENZY19468">ENZY19468<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY1903">ENZY1903<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7548">ENZY7548<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7129">ENZY7129<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY468">ENZY468<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY13977">ENZY13977<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY19288">ENZY19288<a></th>
+                  <td>4</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY7986">ENZY7986<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY21638">ENZY21638<a></th>
                   <td>6</td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
-                  
-                   <td> 0.2 </td>
+                   <td> 0.4 </td>
                   
                    <td> 0.0 </td>
                   
-                   <td> 0.2 </td>
+                   <td> 0.0 </td>
                   
-                   <td> 0.4 </td>
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
                   
                </tr>
            
                
          
                <tr>
-                <th><a href="/enzyme/ENZY3200">ENZY3200<a></th>
+                <th><a href="/enzyme/ENZY17873">ENZY17873<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY17926">ENZY17926<a></th>
+                  <td>4</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY18758">ENZY18758<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.4 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY5113">ENZY5113<a></th>
                   <td>2</td>
                   
-                   <td> 0.2 </td>
-                  
-                   <td> 0.4 </td>
-                  
-                   <td> 0.2 </td>
-                  
                    <td> 0.0 </td>
-                  
-                   <td> 0.2 </td>
-                  
-                   <td> 0.0 </td>
-                  
-               </tr>
-           
-               
-         
-               <tr>
-                <th><a href="/enzyme/ENZY345">ENZY345<a></th>
-                  <td>1</td>
                   
                    <td> 1.0 </td>
                   
@@ -2580,6 +2451,24 @@
                   
                    <td> 0.0 </td>
                   
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY19185">ENZY19185<a></th>
+                  <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
                    <td> 0.0 </td>
                   
                </tr>
@@ -2587,8 +2476,70 @@
                
          
                <tr>
-                <th><a href="/enzyme/ENZY5053">ENZY5053<a></th>
+                <th><a href="/enzyme/ENZY14606">ENZY14606<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY11350">ENZY11350<a></th>
                   <td>2</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.8 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY14068">ENZY14068<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.6 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY13210">ENZY13210<a></th>
+                  <td>3</td>
+                  
+                   <td> 0.0 </td>
                   
                    <td> 0.0 </td>
                   
@@ -2600,7 +2551,45 @@
                   
                    <td> 0.0 </td>
                   
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY12159">ENZY12159<a></th>
+                  <td>3</td>
+                  
                    <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+               </tr>
+           
+               
+         
+               <tr>
+                <th><a href="/enzyme/ENZY17890">ENZY17890<a></th>
+                  <td>6</td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.2 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 0.4 </td>
                   
                </tr>
            
@@ -2624,6 +2613,17 @@
               </tr>
             </thead>
             <tbody>
+               
+         
+               <tr>
+                  <th><a href="/enzyme/ENZY15652">ENZY15652<a></th>
+                  <td>1</td>
+                  
+                   <td> 0.0 </td>
+                  
+                   <td> 1.0 </td>
+                  
+               </tr>
                
             </tbody>
           </table> 
