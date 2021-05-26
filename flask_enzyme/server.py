@@ -17,6 +17,8 @@ import plotly
 import json
 import sys
 import os
+import csv
+import zipfile
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -281,17 +283,32 @@ def predict():
 
 
     pred_class = pred_classes.tolist()
-    for i in range(len(test_enzyme_list_is_enzyme)):
-        current_enzyme =  test_enzyme_list_is_enzyme[i]
-        return_json['prob_class'][current_enzyme] = pred_classes[i]
-        return_json['predict_class'][current_enzyme] = y_pred_classes[i]
+    with open('./results/enzy_result_file.csv', 'w') as csv_file: 
+        csv_file.write('EnzymeID, ClassPrediction,ClassProbs\n')
+        for i in range(len(test_enzyme_list_is_enzyme)):
+            current_enzyme =  test_enzyme_list_is_enzyme[i]
+            return_json['prob_class'][current_enzyme] = pred_classes[i]
+            return_json['predict_class'][current_enzyme] = y_pred_classes[i]
+            csv_file.write(current_enzyme)
+            csv_file.write(',')
+            csv_file.write(str(y_pred_classes[i]))
+            csv_file.write(',')
+            csv_file.write(str(pred_classes[i]))
+            csv_file.write('\n')
 
     pred_enzyme = pred_enzyme.tolist()
-    for i in range(len(test_enzyme_list_non_enzyme)):
-        current_enzyme =  test_enzyme_list_non_enzyme[i]
-        return_json['prob_enzyme'][current_enzyme] = pred_enzyme[i]
-        return_json['predict_class'][current_enzyme] = y_pred_enzyme[i]
-    
+    with open('./results/nonenzy_result_file.csv', 'w') as csv_file: 
+        csv_file.write("NonEnzymeID, ClassPrediction,ClassProbs\n")
+        for i in range(len(test_enzyme_list_non_enzyme)):
+            current_enzyme =  test_enzyme_list_non_enzyme[i]
+            return_json['prob_enzyme'][current_enzyme] = pred_enzyme[i]
+            return_json['predict_class'][current_enzyme] = y_pred_enzyme[i]
+            csv_file.write(current_enzyme)
+            csv_file.write(',')
+            csv_file.write(str(y_pred_enzyme[i]))
+            csv_file.write(',')
+            csv_file.write(str(pred_enzyme[i]))
+            csv_file.write('\n')
     
     return_json['model'] = model_name_formatted
 
@@ -301,6 +318,9 @@ def predict():
     output_from_parsed_template = render_template("result.html", result = return_json)
     with open("./templates/predictions.html", "w") as fh:
         fh.write(output_from_parsed_template)
+
+    ### write results to csv file
+   # write_to_csv(return_json)
 
     return output_from_parsed_template
 
@@ -337,6 +357,41 @@ def reduce_test_train_classes(x_train, x_test, y_train_classes, y_test_class, y_
             test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
 
     return x_train_classes, x_test_classes, y_test_true_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme
+  
+@app.route('/getEnzCsv' , methods = ['POST']) 
+def getEnzCsv():
+    return send_file('results/enzy_result_file.csv',
+                     mimetype='text/csv',
+                     attachment_filename='EnzymeResults.csv',
+                     as_attachment=True)
+
+@app.route('/getNonEnzCsv' , methods = ['POST']) 
+def getNonEnzCsv():
+    return send_file('results/nonenzy_result_file.csv',
+                     mimetype='text/csv',
+                     attachment_filename='NonEnzymeResults.csv',
+                     as_attachment=True)
+
+@app.route('/download_all')
+def download_all():
+    zipf = zipfile.ZipFile('Enz_NonEnz_Results.zip','w', zipfile.ZIP_DEFLATED)
+    for root,dirs, files in os.walk('results/'):
+        for file in files:
+            zipf.write('results/'+file)
+    zipf.close()
+    return send_file('Enz_NonEnz_Results.zip',
+            mimetype = 'zip',
+            attachment_filename= 'Enz_NonEnz_Results.zip',
+            as_attachment = True)
+
+
+def write_to_csv(return_json):
+    data_file = open('./results/result_file.csv', 'w')
+  
+    with open('./results/result_file.csv', 'w') as csv_file:  
+        writer = csv.writer(csv_file)
+        for key, value in return_json.items():
+            writer.writerow([key, value])
 
 def gen_arr(embeddings, seq_id_to_label):
     """

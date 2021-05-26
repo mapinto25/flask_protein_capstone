@@ -50,6 +50,7 @@
     </nav>
     <div class="jumbotron text-center" style="margin-bottom:0">
       <h1>Results For Model {{result['model']}}</h1>
+       </form>
     </div>
 
     <div class="container">
@@ -66,6 +67,10 @@
              aria-selected="true"
              >Enzyme Results</a
            >
+           <form action = "/getEnzCsv" method = "POST" enctype = "multipart/form-data">
+            <button type='submit' class="btn btn-success">Download Enzyme Results</button>
+            
+           </form>
          </li>
          <li class="nav-item" role="presentation">
            <a
@@ -78,6 +83,10 @@
              aria-selected="false"
              >Non Enzyme Results</a
            >
+           <form action = "/getNonEnzCsv" method = "POST" enctype = "multipart/form-data">
+            <button type='submit' class="btn btn-success">Download Non-Enzyme Results</button>
+            
+           </form>
          </li>
        </ul>
        <!-- Tabs navs -->
