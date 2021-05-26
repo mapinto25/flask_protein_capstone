@@ -20,6 +20,7 @@ import os
 import csv
 import zipfile
 from werkzeug.utils import secure_filename
+from sklearn.neighbors import NearestNeighbors
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './input'
@@ -34,6 +35,8 @@ current_enzyme_global_data = {}
 matrix = []
 f1Score = None
 accuracy = None
+enzyme_to_closest = {}
+model = None
 
 @app.route('/')
 def home_page():
@@ -62,20 +65,15 @@ def get_results():
 @app.route('/enzyme/<enzyme_id>', methods=['GET'])
 def enzyme(enzyme_id):
     #do your code here
-    print('GET!!!!')
-    print(enzyme_id)
     global current_enzyme_global_data
-    print(current_enzyme_global_data)
     current_enzyme_classification = current_enzyme_global_data['predict_class'][enzyme_id]
     enzyme_confidences = current_enzyme_global_data['prob_class'][enzyme_id]
-    print(current_enzyme_classification)
-    print(matrix.tolist())
     return render_template("enzyme.html", 
                            probabilities=enzyme_confidences, 
                            current_enzyme_classification=current_enzyme_classification, 
                            matrix=matrix.tolist(),
                            f1Score=f1Score, 
-                           accuracy=accuracy)
+                           accuracy=accuracy, model = model, enzyme_to_closest=enzyme_to_closest, enzyme_id=enzyme_id)
 
 @app.route('/enzyme/pca.html')
 def get_pca():
@@ -166,7 +164,7 @@ def predict():
     global matrix
     global f1Score
     global accuracy
-
+    global model
 
     if request.form['down_stream_model'] == 'knn':
         neigh = KNeighborsClassifier(n_neighbors=5)
@@ -177,6 +175,23 @@ def predict():
         x_train_classes, x_test_classes, y_test_true_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_test_class, y_pred_enzyme, test_enzyme_list)
 
         y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+
+
+        nbrs = NearestNeighbors(n_neighbors=3, algorithm='ball_tree').fit(x_test_classes)
+        distances, indices = nbrs.kneighbors(x_test_classes)
+
+        model = 'knn'
+
+        global enzyme_to_closest
+
+        i = 0
+        for index in indices:
+            index_nearest = int(index[1])
+            index_second_nearest = int(index[2])
+
+            current_enzyme = test_enzyme_list_is_enzyme[i]
+            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest]]
+            i +=1
 
 
         neigh = KNeighborsClassifier(n_neighbors=5)
@@ -190,7 +205,7 @@ def predict():
         accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
     elif request.form['down_stream_model'] == 'svc':
-        print("SVC")
+        model = 'svc'
 
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto', probability=True)
 
@@ -213,6 +228,8 @@ def predict():
 
     elif request.form['down_stream_model'] == 'deep_learning':
 
+        model = 'mlp'
+
         clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
 
         clf.fit(x_train, y_train_enzyme)
@@ -233,6 +250,7 @@ def predict():
         accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
     elif request.form['down_stream_model'] == 'naive':
+        model = 'nvb'
 
         clf =  GaussianNB()
 
@@ -254,6 +272,8 @@ def predict():
         accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
 
     elif request.form['down_stream_model'] == 'dtree':
+
+        model = 'dtree'
 
 
         clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
