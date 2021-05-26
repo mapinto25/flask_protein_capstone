@@ -26,12 +26,15 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './input'
 ALLOWED_EXTENSIONS = set(['npz', 'NPZ', 'json', 'JSON'])
 
+DECIMAL_POINTS = 3
+
 #File extension checking
 def allowed_filename(filename):
 	return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
 
 
 current_enzyme_global_data = {}
+enzyme_to_class = {}
 matrix = []
 f1Score = None
 accuracy = None
@@ -64,16 +67,28 @@ def get_results():
 
 @app.route('/enzyme/<enzyme_id>', methods=['GET'])
 def enzyme(enzyme_id):
-    #do your code here
     global current_enzyme_global_data
+    known_enzyme = False
+    known_enzyme_classification = ""
+
     current_enzyme_classification = current_enzyme_global_data['predict_class'][enzyme_id]
     enzyme_confidences = current_enzyme_global_data['prob_class'][enzyme_id]
+
+    if enzyme_id in enzyme_to_class:
+        known_enzyme = True
+        known_enzyme_classification = enzyme_to_class[enzyme_id]
+
     return render_template("enzyme.html", 
-                           probabilities=enzyme_confidences, 
-                           current_enzyme_classification=current_enzyme_classification, 
-                           matrix=matrix.tolist(),
-                           f1Score=f1Score, 
-                           accuracy=accuracy, model = model, enzyme_to_closest=enzyme_to_closest, enzyme_id=enzyme_id)
+                           probabilities = enzyme_confidences, 
+                           current_enzyme_classification = current_enzyme_classification, 
+                           matrix = matrix.tolist(),
+                           f1Score = f1Score, 
+                           accuracy = accuracy, 
+                           model = model, 
+                           enzyme_to_closest = enzyme_to_closest, 
+                           known_enzyme = known_enzyme,
+                           known_enzyme_classification = known_enzyme_classification,
+                           enzyme_id = enzyme_id)
 
 @app.route('/enzyme/pca.html')
 def get_pca():
@@ -125,11 +140,10 @@ def predict():
 
     all_data['Name'] = enzyme_list
 
-    class_list = []
+    global enzyme_to_class
 
     with open(f'./input/{class_file}') as f:
         enzyme_to_class = json.load(f)
-
 
     enzyme_non_enzyme_list, class_list = process_enzyme_labels(enzyme_list, enzyme_to_class)
     
@@ -201,8 +215,8 @@ def predict():
         model_name_formatted = 'KNN'
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
-        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+        f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'svc':
         model = 'svc'
@@ -223,8 +237,8 @@ def predict():
         model_name_formatted = 'SVC'
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
-        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+        f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'deep_learning':
 
@@ -246,8 +260,8 @@ def predict():
         model_name_formatted = 'MLP'
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
-        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+        f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'naive':
         model = 'nvb'
@@ -268,8 +282,8 @@ def predict():
         model_name_formatted = 'Naive Bayes'
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
-        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+        f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'dtree':
 
@@ -292,8 +306,8 @@ def predict():
         model_name_formatted = 'Random Forest'
 
         matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        f1Score = f1_score(y_test_true_classes, y_pred_classes, average='macro')
-        accuracy = accuracy_score(y_test_true_classes, y_pred_classes)
+        f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
 
     pca_visualize_data(npz_file,class_file)
     return_json = {}

@@ -41,9 +41,11 @@
     </div>
     <div class="jumbotron text-center" style="margin-bottom:0">
       <h1>Enzyme Page for {{enzyme_id}}</h1>
-      <h2>Predicted Class: {{current_enzyme_classification}}</h2>
-      <h2>F1 Score: {{f1Score}}</h2>
-      <h2>Accuracy: {{accuracy}}</h2>
+      <h4>Predicted Class: {{current_enzyme_classification}}</h4>
+      {% if known_enzyme == True %}
+      <p>Note: This is a known enzyme from the training set. 
+      The actual class is: {{known_enzyme_classification}}</p>
+      {% endif %}
     </div> 
     <div class="container">
       <div class="row" style="padding: 10px 0px">
@@ -57,7 +59,6 @@
             <table class='table text-center'>
               <thead>
                 <tr>
-                  <th scope="col">0</th>
                   <th scope="col">1</th>
                   <th scope="col">2</th>
                   <th scope="col">3</th>
@@ -73,6 +74,19 @@
               </tr>
             </table>
           </div>
+            <h3 class="text-center">Prediction Accuracy</h3>
+            <table class="table text-center">
+              <tr>
+                <th scope="col">F1 Score</th>
+                <td>{{f1Score}}</td>
+              </tr>
+              <tr>
+                <th scope="col">Accuracy</th>
+                <td>{{accuracy}}</td>
+              </tr>
+            </table>
+          <div>
+          </div>
         </div>
         <div class="col-sm-7">
           <div>
@@ -82,17 +96,26 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-5">
+          {% if model == 'knn' %}
+          <div id='knn'>
+            <h3>KNN Nearest Neighbors</h1>
+            <table class="table text-center">
+              <tr>
+                <th scope="col">Nearest Neighbors</th>
+              </tr>
+              {% for enzyme in enzyme_to_closest[enzyme_id] %}
+              <tr>
+                <td>{{enzyme}}</td>
+              </tr>
+              {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
-    {% if model == 'knn' %}
-    <div id='knn'>
-      <h1>KNN Nearest Neighbors</h1>
-      {% for enzyme in enzyme_to_closest[enzyme_id] %}
-
-      <h3>{{enzyme}}</h3>
-      {% endfor %}
-    </div>
-
-    {% endif %}
+    
       <div>
         <script>
           var confusionMatrix = {{matrix | safe }};
