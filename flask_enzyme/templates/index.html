@@ -41,9 +41,6 @@
                 <a class="nav-link" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/visualization">Visualization</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="/pca">PCA</a>
               </li>
               <li class="nav-item">
@@ -52,20 +49,23 @@
               <li class="nav-item">
                 <a class="nav-link" href="/bert">Bert Model</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/visualization">Training Data</a>
+              </li>
             </ul>
           </div>
         </nav>
       <div class="jumbotron jumbotron-fluid">
         <div class="container">
-          <h1 class="display-4">Welcome to Protein Data Analysis – BERT Enzyme Classifier! </h1>
+          <h1 class="display-4">Welcome to ECLIPSE! (Enzyme CLassification using Protein Seqeuncing Embeddings) </h1>
         </div>
       </div>
       <div class="container">
         <div>
-          <p class="lead">This model leverages word embeddings derived from Bidirectional Encoder Representations from Transformer models to predict enzyme classes. To start, please refer to the documentation tab. From there, you will be guided on how to obtain protein sequence embeddings from fasta files needed to run our prediction models.
+          <p class="lead">ECLIPSE leverages word embeddings derived from Bidirectional Encoder Representations from Transformer models to predict enzyme classes. To start, please refer to the documentation tab. From there, you will be guided on how to obtain protein sequence embeddings from fasta files needed to run our prediction models.
           </p>
-          <p>Once you have your embeddings, submit the npz and json files using the links provided below. Then, choose the BERT model you utilized to obtain your embeddings and the downstream model you would prefer to run your predictions, and click Predict! </p>
-          <p>Accuracies per each downstream model can be found below for reference.</p>
+          <p class="lead">Once you have your embeddings, submit the npz and json files using the links provided below. Then, choose the BERT model you utilized to obtain your embeddings and the downstream model you would prefer to run your predictions, and click Predict! </p>
+          <p class="lead">Accuracies per each downstream model run on embeddings derived for a pilot dataset can be found below for reference.</p>
         </div>
       </div>  
       <div>
@@ -110,13 +110,12 @@
       </div>
          <div id='form'>
           <p>
-            Custom BERT Embedding files (*.npz,*.NPZ) and labels files (*.jsoon, *.JSON) can be uploaded to run the downstream models
+            Custom BERT Embedding files (*.npz,*.NPZ) and labels files (*.json, *.JSON) can be uploaded to run the downstream models
          </p>
           <form action = "/predict" method = "POST" enctype = "multipart/form-data">
             <p class = "tab">
             <label class='npz' for="npz">Select .npz file</label>
             <input id = 'npz' type = "file" name = "npzfile" value = "Choose .npz file" size = "50" class = "custom-file-input"  z-index="50" placeholder ="Custom.npz">
-            <br> <br>
             <label class='npz' 
             for="label">Select labels .json file</label>
             <input id = 'label' type = "file" name = "jsonfile" size = "50" class = "custom-file-input"  z-index="50" placeholder ="Custom.json">
@@ -136,7 +135,7 @@
             <option  value="svc">SVC</option>
             <option  value="dtree">Random Forest</option>
           </select>
-          <button type='submit' class="btn btn-success">Predict!!!</button>
+          <button type='submit' class="btn btn-success">Predict!!</button>
     </form>
          </div>
     </body>

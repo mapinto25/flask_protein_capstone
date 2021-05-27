@@ -493,23 +493,21 @@ def pca_visualize_data(npz_file,class_file):
             color="target",
             color_discrete_sequence=px.colors.qualitative.G10,
         )
-
+    
+    text = '''
+    
+    <a href="/predictions">Back</a>
+             
+   
+    '''
+    
+    title = text +'\n' + 'PCA Enzyme Data'
     fig.update_layout(
     height=800,
-    title_text='PCA Enzyme Data'
+    title_text= title
     )
     
     fig.write_html("templates/pca.html")
-
-    text = '''
-    <html>
-        <body>
-            <button type="button" class="btn btn-outline-primary" data-mdb-ripple-color="dark">
-                <a href="/">Home</a>
-              </button>
-        </body>
-    </html>
-    '''
 
     file = open("templates/pca.html","a")
     file.write(text)
