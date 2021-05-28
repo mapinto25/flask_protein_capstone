@@ -441,12 +441,13 @@ def gen_arr(embeddings, seq_id_to_label):
         labels (list[str])
     """
     keys = embeddings.files
-    output, labels = [], []
+    output, labels, ids = [], [], []
     for key in keys:
         d = embeddings[key].item()["avg"]
         labels.append(seq_id_to_label[key])
         output.append(d)
-    return np.array(output), labels
+        ids.append(key)
+    return np.array(output), labels, ids
 
 def pca_visualize_data(npz_file,class_file):
     """
@@ -466,7 +467,7 @@ def pca_visualize_data(npz_file,class_file):
 
     
     print("generating dataframes")
-    embed_arr, embed_labels = gen_arr(input_data, lookup_d)
+    embed_arr, embed_labels, embed_ids = gen_arr(input_data, lookup_d)
     print("generating PCA")
     pca = PCA(n_components=3)
     principal_components = pca.fit_transform(embed_arr)
@@ -474,6 +475,17 @@ def pca_visualize_data(npz_file,class_file):
         data=principal_components, columns=["pc1", "pc2", "pc3"]
     )
     principal_df["target"] = embed_labels
+    principal_df["id"] = embed_ids
+    principal_df["source"] = "Train"
+    
+
+    #########################################################################
+    ##### FIX THIS
+    ##setting the test datapoints to different symbols as determined by source
+    ### for now subsetting to 1/10 of the datapoints.  Later pass in and use the test dataset ids
+    test_ids = principal_df.id[:int(len(principal_df)/10)]
+    principal_df['source'][principal_df['id'].isin(test_ids)] = 'Test'
+
     print("generating plot")
 
     # Adjust PCA according to the number of components
@@ -484,6 +496,8 @@ def pca_visualize_data(npz_file,class_file):
             y="pc2",
             z="pc3",
             color="target",
+            hover_name="id",
+            symbol = 'source',
             color_discrete_sequence=px.colors.qualitative.G10,
         )
     if n_components == 2:
@@ -492,6 +506,8 @@ def pca_visualize_data(npz_file,class_file):
             x="pc1",
             y="pc2",
             color="target",
+            hover_name="id",
+            symbol = 'source',
             color_discrete_sequence=px.colors.qualitative.G10,
         )
     
