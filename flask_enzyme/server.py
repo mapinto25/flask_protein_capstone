@@ -191,7 +191,7 @@ def predict():
         y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
 
 
-        nbrs = NearestNeighbors(n_neighbors=3, algorithm='ball_tree').fit(x_test_classes)
+        nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
         distances, indices = nbrs.kneighbors(x_test_classes)
 
         model = 'knn'
@@ -202,9 +202,10 @@ def predict():
         for index in indices:
             index_nearest = int(index[1])
             index_second_nearest = int(index[2])
+            index_third_nearest = int(index[3])
 
             current_enzyme = test_enzyme_list_is_enzyme[i]
-            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest]]
+            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest], test_enzyme_list_is_enzyme[index_third_nearest]]
             i +=1
 
 

@@ -100,14 +100,14 @@
         <div class="col-sm-5">
           {% if model == 'knn' %}
           <div id='knn'>
-            <h3>KNN Nearest Neighbors</h1>
+            <h3>N Nearest Neighbors</h1>
             <table class="table text-center">
               <tr>
                 <th scope="col">Nearest Neighbors</th>
               </tr>
               {% for enzyme in enzyme_to_closest[enzyme_id] %}
               <tr>
-                <td>{{enzyme}}</td>
+                <td><a href="/enzyme/{{enzyme}}">{{enzyme}}<a></td>
               </tr>
               {% endfor %}
           </div>
