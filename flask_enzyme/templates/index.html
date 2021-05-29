@@ -114,11 +114,12 @@
          </p>
           <form action = "/predict" method = "POST" enctype = "multipart/form-data">
             <p class = "tab">
-            <label class='npz' for="npz">Select .npz file</label>
-            <input id = 'npz' type = "file" name = "npzfile" value = "Choose .npz file" size = "50" class = "custom-file-input"  z-index="50" placeholder ="Custom.npz">
-            <label class='npz' 
-            for="label">Select labels .json file</label>
+            <label class='npz' for="npz1">Select train.npz file</label>
+            <input id = 'npz1' type = "file" name = "npzfile" size = "50" class = "custom-file-input"  z-index="50" placeholder ="Custom.npz">
+            <label class='npz' for="label">Select labels train .json file</label>
             <input id = 'label' type = "file" name = "jsonfile" size = "50" class = "custom-file-input"  z-index="50" placeholder ="Custom.json">
+            <label class='npz' for="npz2">Select test .npz file</label>
+            <input id = 'npz2' type = "file" name = "test_npzfile" size = "50" class = "custom-file-input"  z-index="50" placeholder ="Custom.npz">
             </p>
           <select class="form-select" aria-label="Default select example" name='model'>
             <option selected>Choose Embeddings</option>
@@ -136,7 +137,7 @@
             <option  value="dtree">Random Forest</option>
           </select>
           <button type='submit' class="btn btn-success">Predict!!</button>
-    </form>
+        </form>
          </div>
     </body>
 </html>
