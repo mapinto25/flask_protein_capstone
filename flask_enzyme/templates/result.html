@@ -146,7 +146,7 @@
                {% for enzyme  in result['prob_enzyme'] %}
          
                <tr>
-                  <th><a href="/enzyme/{{enzyme}}">{{enzyme}}<a></th>
+                  <th>{{enzyme}}</th>
                   <td>{{ result['predict_class'][enzyme]}}</td>
                   {% for prob  in result['prob_enzyme'][enzyme] %}
                    <td> {{prob}} </td>

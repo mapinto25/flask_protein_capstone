@@ -78,21 +78,12 @@ def enzyme(enzyme_id):
         known_enzyme = True
         known_enzyme_classification = enzyme_to_class[enzyme_id]
 
-    # return render_template("enzyme.html", 
-    #                        probabilities = enzyme_confidences, 
-    #                        current_enzyme_classification = current_enzyme_classification, 
-    #                        matrix = matrix.tolist(),
-    #                        f1Score = f1Score, 
-    #                        accuracy = accuracy, 
-    #                        model = model, 
-    #                        enzyme_to_closest = enzyme_to_closest, 
-    #                        known_enzyme = known_enzyme,
-    #                        known_enzyme_classification = known_enzyme_classification,
-    #                        enzyme_id = enzyme_id)
-
     return render_template("enzyme.html", 
                            probabilities = enzyme_confidences, 
                            current_enzyme_classification = current_enzyme_classification, 
+                           matrix = matrix.tolist(),
+                           f1Score = f1Score, 
+                           accuracy = accuracy, 
                            model = model, 
                            enzyme_to_closest = enzyme_to_closest, 
                            known_enzyme = known_enzyme,
@@ -194,17 +185,19 @@ def predict():
     
     test['embeddings'] = embedings
 
-
-
-
     print(test.shape[0])
     print(all_data.shape[0])
 
+    train, validation = train_test_split(all_data)
 
 
-    x_train = list(all_data['embeddings'])
-    y_train_classes = all_data[['classes']]
-    y_train_enzyme = all_data[['enzyme_non_enzyme']]
+    x_train = list(train['embeddings'])
+    y_train_classes = train[['classes']]
+    y_train_enzyme = train[['enzyme_non_enzyme']]
+
+    x_val = list(validation['embeddings'])
+    y_val_class = validation['classes']
+
     x_test = list(test['embeddings'])
 
     test_enzyme_list = test['Name'].tolist()
@@ -226,7 +219,7 @@ def predict():
 
         print(y_pred_enzyme)
 
-        x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
+        x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme = reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
 
         y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
 
@@ -251,9 +244,11 @@ def predict():
         pred_classes = neigh.predict_proba(x_test_classes)
         model_name_formatted = 'KNN'
 
-        # matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        # f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
-        # accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
+        y_val_classes = neigh.predict(x_val)
+
+        matrix = confusion_matrix(y_val_class, y_val_classes)
+        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'svc':
         model = 'svc'
@@ -288,9 +283,11 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
 
-        # matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        # f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
-        # accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
+        y_val_classes = clf.predict(x_val)
+
+        matrix = confusion_matrix(y_val_class, y_val_classes)
+        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'deep_learning':
 
@@ -325,9 +322,11 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
 
-        # matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        # f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
-        # accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
+        y_val_classes = clf.predict(x_val)
+
+        matrix = confusion_matrix(y_val_class, y_val_classes)
+        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'naive':
         model = 'nvb'
@@ -362,9 +361,11 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
 
-        # matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        # f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
-        # accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
+        y_val_classes = clf.predict(x_val)
+
+        matrix = confusion_matrix(y_val_class, y_val_classes)
+        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
     elif request.form['down_stream_model'] == 'dtree':
 
@@ -400,9 +401,11 @@ def predict():
         y_pred_classes = clf.predict(x_test_classes)
         pred_classes = clf.predict_proba(x_test_classes)
 
-        # matrix = confusion_matrix(y_test_true_classes,y_pred_classes)
-        # f1Score = round(f1_score(y_test_true_classes, y_pred_classes, average='macro'), DECIMAL_POINTS)
-        # accuracy = round(accuracy_score(y_test_true_classes, y_pred_classes), DECIMAL_POINTS)
+        y_val_classes = clf.predict(x_val)
+
+        matrix = confusion_matrix(y_val_class, y_val_classes)
+        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
 
     pca_visualize_data(npz_file,class_file)
