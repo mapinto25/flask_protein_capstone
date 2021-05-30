@@ -35,6 +35,7 @@ def allowed_filename(filename):
 
 current_enzyme_global_data = {}
 enzyme_to_class = {}
+enzyme_to_class_predicted = {}
 matrix = []
 f1Score = None
 accuracy = None
@@ -88,7 +89,8 @@ def enzyme(enzyme_id):
                            enzyme_to_closest = enzyme_to_closest, 
                            known_enzyme = known_enzyme,
                            known_enzyme_classification = known_enzyme_classification,
-                           enzyme_id = enzyme_id)
+                           enzyme_id = enzyme_id,
+                           enzyme_to_class_predicted = enzyme_to_class_predicted)
 
 @app.route('/enzyme/pca.html')
 def get_pca():
@@ -416,12 +418,15 @@ def predict():
 
 
     pred_class = pred_classes.tolist()
+    global enzyme_to_class_predicted
     with open('./results/enzy_result_file.csv', 'w') as csv_file: 
         csv_file.write('EnzymeID, ClassPrediction,ClassProbs\n')
         for i in range(len(test_enzyme_list_is_enzyme)):
             current_enzyme =  test_enzyme_list_is_enzyme[i]
             return_json['prob_class'][current_enzyme] = np.around(pred_classes[i], decimals= DECIMAL_POINTS)
             return_json['predict_class'][current_enzyme] = y_pred_classes[i]
+            enzyme_to_class_predicted[current_enzyme] =  y_pred_classes[i]
+
             csv_file.write(current_enzyme)
             csv_file.write(',')
             csv_file.write(str(y_pred_classes[i]))

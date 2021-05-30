@@ -103,10 +103,12 @@
             <table class="table text-center">
               <tr>
                 <th scope="col">Nearest Neighbors</th>
+                <th scope="col">Predicted Class</th>
               </tr>
               {% for enzyme in enzyme_to_closest[enzyme_id] %}
               <tr>
                 <td><a href="/enzyme/{{enzyme}}">{{enzyme}}<a></td>
+                <td>{{enzyme_to_class_predicted[enzyme]}}</td>
               </tr>
               {% endfor %}
           </div>
