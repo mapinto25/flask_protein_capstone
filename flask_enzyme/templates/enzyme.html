@@ -202,13 +202,13 @@
                 .attr("height", y.rangeBand())
                 .style("stroke-width", 0);
 
-              cell.append("text")
-                .attr("dy", ".32em")
-                .attr("x", x.rangeBand() / 2)
-                .attr("y", y.rangeBand() / 2)
-                .attr("text-anchor", "middle")
-                .style("fill", function(d, i) { return d >= maxValue/2 ? 'white' : 'black'; })
-                .text(function(d, i) { return d; });
+            cell.append("text")
+              .attr("dy", ".32em")
+              .attr("x", x.rangeBand() / 2)
+              .attr("y", y.rangeBand() / 2)
+              .attr("text-anchor", "middle")
+              .style("fill", function(d, i) { return d >= maxValue/2 ? 'white' : 'black'; })
+              .text(function(d, i) { return d; });
 
             row.selectAll(".cell")
                 .data(function(d, i) { return data[i]; })
@@ -216,6 +216,27 @@
 
             var labels = svg.append('g')
               .attr('class', "labels");
+
+            var yLabel = svg.append("g")
+                .attr("class", "labels");
+
+            yLabel.append("text")
+                .attr("x", -120)
+                .attr("y", -40)
+                .attr("dy", ".22em")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .text(function(d, i) {return "Actual Labels";});
+
+            var xLabel = svg.append("g")
+                .attr("class", "labels");
+
+            xLabel.append("text")
+                .attr("x", 220)
+                .attr("y", 400)
+                .attr("dy", ".22em")
+                .attr("text-anchor", "end")
+                .text(function(d, i) {return "Predicted Labels";});
 
             var columnLabels = labels.selectAll(".column-label")
                 .data(labelsData)
@@ -260,51 +281,51 @@
                 .attr("text-anchor", "end")
                 .text(function(d, i) { return d; });
 
-              var key = d3.select("#legend")
-              .append("svg")
-              .attr("width", widthLegend)
-              .attr("height", height + margin.top + margin.bottom);
+            var key = d3.select("#legend")
+            .append("svg")
+            .attr("width", widthLegend)
+            .attr("height", height + margin.top + margin.bottom);
 
-              var legend = key
-              .append("defs")
-              .append("svg:linearGradient")
-              .attr("id", "gradient")
-              .attr("x1", "100%")
-              .attr("y1", "0%")
-              .attr("x2", "100%")
-              .attr("y2", "100%")
-              .attr("spreadMethod", "pad");
+            var legend = key
+            .append("defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "100%")
+            .attr("y1", "0%")
+            .attr("x2", "100%")
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
 
-              legend
-              .append("stop")
-              .attr("offset", "0%")
-              .attr("stop-color", endColor)
-              .attr("stop-opacity", 1);
+            legend
+            .append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", endColor)
+            .attr("stop-opacity", 1);
 
-              legend
-              .append("stop")
-              .attr("offset", "100%")
-              .attr("stop-color", startColor)
-              .attr("stop-opacity", 1);
+            legend
+            .append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", startColor)
+            .attr("stop-opacity", 1);
 
-              key.append("rect")
-              .attr("width", widthLegend/2-10)
-              .attr("height", height)
-              .style("fill", "url(#gradient)")
-              .attr("transform", "translate(0," + margin.top + ")");
+            key.append("rect")
+            .attr("width", widthLegend/2-10)
+            .attr("height", height)
+            .style("fill", "url(#gradient)")
+            .attr("transform", "translate(0," + margin.top + ")");
 
-              var y = d3.scale.linear()
-              .range([height, 0])
-              .domain([minValue, maxValue]);
+            var y = d3.scale.linear()
+            .range([height, 0])
+            .domain([minValue, maxValue]);
 
-              var yAxis = d3.svg.axis()
-              .scale(y)
-              .orient("right");
+            var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("right");
 
-              key.append("g")
-              .attr("class", "y axis")
-              .attr("transform", "translate(41," + margin.top + ")")
-              .call(yAxis)
+            key.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(41," + margin.top + ")")
+            .call(yAxis)
           }
         </script>
       </div>
