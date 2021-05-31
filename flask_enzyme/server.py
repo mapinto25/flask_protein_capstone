@@ -64,6 +64,10 @@ def documentation():
 def get_results():
     return render_template('predictions.html')
 
+@app.route('/test')
+def get_test():
+    return render_template('test2.html')
+
 @app.route('/enzyme/<enzyme_id>', methods=['GET'])
 def enzyme(enzyme_id):
     global current_enzyme_global_data
@@ -88,7 +92,8 @@ def enzyme(enzyme_id):
                            known_enzyme = known_enzyme,
                            known_enzyme_classification = known_enzyme_classification,
                            enzyme_id = enzyme_id,
-                           enzyme_to_class_predicted = enzyme_to_class_predicted)
+                           enzyme_to_class_predicted = enzyme_to_class_predicted,
+                           pca = pca_div)
 
 @app.route('/enzyme/pca.html')
 def get_pca():
@@ -407,8 +412,9 @@ def predict():
         f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
         accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
+    global pca_div
 
-    pca_visualize_data(npz_file,class_file)
+    pca_div = pca_visualize_data(npz_file,class_file)
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -604,6 +610,7 @@ def pca_visualize_data(npz_file,class_file):
             color="target",
             hover_name="id",
             symbol = 'source',
+            height=750,
             color_discrete_sequence=px.colors.qualitative.G10,
         )
     if n_components == 2:
@@ -616,13 +623,17 @@ def pca_visualize_data(npz_file,class_file):
             symbol = 'source',
             color_discrete_sequence=px.colors.qualitative.G10,
         )
-    
+
     text = '''
     
     <a href="/predictions" target="_self"> Back </a>
              
    
     '''
+
+    # print(fig.to_json())
+    div = plotly.offline.plot(fig, include_plotlyjs=False, output_type='div')
+    # print(div)
     
     title = text +'\n' + 'PCA Enzyme Data'
     fig.update_layout(
@@ -635,7 +646,7 @@ def pca_visualize_data(npz_file,class_file):
     file = open("templates/pca.html","a")
     file.write(text)
     file.close()
-    return
+    return div
   
 
 app.run(port='1090')
