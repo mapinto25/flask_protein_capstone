@@ -1,17 +1,15 @@
 from flask import Flask, render_template, request, flash, session, send_from_directory, send_file
 import pandas as pd
 import numpy as np
-from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import accuracy_score
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+from sklearn.neighbors import KNeighborsClassifier, NearestNeighbors
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.decomposition import PCA
+
 import plotly.express as px
 import plotly
 import json
@@ -19,8 +17,8 @@ import sys
 import os
 import csv
 import zipfile
+
 from werkzeug.utils import secure_filename
-from sklearn.neighbors import NearestNeighbors
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './input'
