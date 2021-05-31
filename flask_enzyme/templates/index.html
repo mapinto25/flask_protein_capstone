@@ -115,23 +115,13 @@
           <p class="text-right">
           * = required
           </p>
-          <p>
-            Custom BERT Embedding files (*.npz,*.NPZ) and labels files (*.json, *.JSON) can be uploaded to run the downstream models
-          </p>
-          <form action = "/predict" method = "POST" enctype = "multipart/form-data">
-            <div class="form-group">
-              <label for="npz1">Select train.npz file</label>
-              <input id = 'npz1' type = "file" name = "npzfile" size = "50" class = "form-control-file"  z-index="50" placeholder ="Custom.npz">
-            </div>
-            <div class="form-group">
-              <label for="label">Select labels train .json file</label>
-              <input id = 'label' type = "file" name = "jsonfile" size = "50" class = "form-control-file"  z-index="50" placeholder ="Custom.json">
-            </div>
-            <hr class="solid">
+            <form action = "/predict" method = "POST" enctype = "multipart/form-data">
             <div class="form-group">
               <label for="npz2">Select test .npz file *</label>
               <input id = 'npz2' type = "file" name = "test_npzfile" size = "50" class = "form-control-file is-valid"  z-index="50" placeholder ="Custom.npz" required>
             </div>
+            <hr class="solid">
+
             <div class="form-group">
               <select class="form-select custom-select" aria-label="Select the embedding model" name='embedding_model' required>
                 <option  value="" selected>Choose Embeddings Model *</option>
@@ -141,6 +131,18 @@
                 <option  value="custom">Custom</option>
               </select>
             </div>
+            <p>
+              If Custom BERT Embedding was chosen, input embedding (*.npz,*.NPZ) and label files (*.json, *.JSON) to be uploaded for the downstream models.
+            </p>
+              <div class="form-group">
+                <label for="npz1">Select train.npz file</label>
+                <input id = 'npz1' type = "file" name = "npzfile" size = "50" class = "form-control-file"  z-index="50" placeholder ="Custom.npz">
+              </div>
+              <div class="form-group">
+                <label for="label">Select labels train .json file</label>
+                <input id = 'label' type = "file" name = "jsonfile" size = "50" class = "form-control-file"  z-index="50" placeholder ="Custom.json">
+              </div>
+            <hr class="solid">
             <div class="form-group">
               <select class="form-select custom-select" aria-label="Select the downstream model" name='down_stream_model' required>
                 <option  value="" selected>Choose Downstream Model *</option>
