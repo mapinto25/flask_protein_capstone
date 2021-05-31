@@ -64,10 +64,6 @@ def documentation():
 def get_results():
     return render_template('predictions.html')
 
-@app.route('/test')
-def get_test():
-    return render_template('test2.html')
-
 @app.route('/enzyme/<enzyme_id>', methods=['GET'])
 def enzyme(enzyme_id):
     global current_enzyme_global_data
