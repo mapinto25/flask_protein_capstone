@@ -619,7 +619,7 @@ def pca_visualize_data(npz_file,class_file):
     
     text = '''
     
-    <a href="/predictions">Back</a>
+    <a href="/predictions" target="_self"> Back </a>
              
    
     '''
