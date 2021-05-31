@@ -132,6 +132,8 @@ def predict():
         class_file = json_file_name
         npz_file = filename
 
+    global embeddings_per_enzyme
+    global enzyme_list
 
     embeddings_per_enzyme = {}
     enzyme_list = []
@@ -258,8 +260,8 @@ def predict():
 
         clf = SVC(C = 10, kernel = 'rbf', gamma='auto', probability=True)
         clf.fit(x_train, y_train_enzyme)
-        y_pred_enzyme = neigh.predict(x_test)
-        pred_enzyme = neigh.predict_proba(x_test)
+        y_pred_enzyme = clf.predict(x_test)
+        pred_enzyme = clf.predict_proba(x_test)
 
 
         x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
@@ -410,7 +412,7 @@ def predict():
 
     global pca_div
 
-    pca_div = pca_visualize_data(npz_file,class_file)
+    pca_div = pca_visualize_data(embeddings_per_enzyme,enzyme_to_class)
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -548,16 +550,17 @@ def gen_arr(embeddings, seq_id_to_label):
         output (np.array): Average embeddings for each sequence
         labels (list[str])
     """
-    keys = embeddings.files
+    # keys = embeddings.files
     output, labels, ids = [], [], []
-    for key in keys:
-        d = embeddings[key].item()["avg"]
+    for key in embeddings:
+        # print(embeddings[key])
+        d = embeddings[key]
         labels.append(seq_id_to_label[key])
         output.append(d)
         ids.append(key)
     return np.array(output), labels, ids
 
-def pca_visualize_data(npz_file,class_file):
+def pca_visualize_data(npz_data,class_data):
     """
     Prepare and render an interactive plotly PCA visualization given the following:
         * n_components: Number of PCA components (must be 2 or 3)
@@ -568,14 +571,15 @@ def pca_visualize_data(npz_file,class_file):
     n_components = 3
 
     #load labels file
-    lookup_d = json.load(open(f'./input/{class_file}'))
+    # lookup_d = json.load(open(f'./input/{class_file}'))
 
-    #load npz file
-    input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
+    # #load npz file
+    # input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
 
-    
+    # print(npz_data)
+    # print(type(npz_data))
     print("generating dataframes")
-    embed_arr, embed_labels, embed_ids = gen_arr(input_data, lookup_d)
+    embed_arr, embed_labels, embed_ids = gen_arr(npz_data, class_data)
     print("generating PCA")
     pca = PCA(n_components=3)
     principal_components = pca.fit_transform(embed_arr)
@@ -597,28 +601,29 @@ def pca_visualize_data(npz_file,class_file):
     print("generating plot")
 
     # Adjust PCA according to the number of components
-    if n_components == 3:
-        fig = px.scatter_3d(
-            principal_df,
-            x="pc1",
-            y="pc2",
-            z="pc3",
-            color="target",
-            hover_name="id",
-            symbol = 'source',
-            height=750,
-            color_discrete_sequence=px.colors.qualitative.G10,
-        )
-    if n_components == 2:
-        fig = px.scatter(
-            principal_df,
-            x="pc1",
-            y="pc2",
-            color="target",
-            hover_name="id",
-            symbol = 'source',
-            color_discrete_sequence=px.colors.qualitative.G10,
-        )
+    # if n_components == 3:
+    fig = px.scatter_3d(
+        principal_df,
+        x="pc1",
+        y="pc2",
+        z="pc3",
+        color="target",
+        title="PCA",
+        hover_name="id",
+        symbol = 'source',
+        height=750,
+        color_discrete_sequence=px.colors.qualitative.G10,
+    )
+    # if n_components == 2:
+    #     fig = px.scatter(
+    #         principal_df,
+    #         x="pc1",
+    #         y="pc2",
+    #         color="target",
+    #         hover_name="id",
+    #         symbol = 'source',
+    #         color_discrete_sequence=px.colors.qualitative.G10,
+    #     )
 
     text = '''
     
