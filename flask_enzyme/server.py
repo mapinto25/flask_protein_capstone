@@ -118,16 +118,16 @@ def predict():
                 submitted_file.save(os.path.join(app.config['UPLOAD_FOLDER'], test_filename))
 
 
-    if request.form['model'] == 'ESM':
+    if request.form['embedding_model'] == 'ESM':
         class_file = 'enzyme_to_class_esm.json'
         npz_file = 'esm.npz'
-    elif request.form['model'] == 'tape':
+    elif request.form['embedding_model'] == 'tape':
         class_file = 'enzyme_to_class_tape.json'
         npz_file = 'tape.npz'
-    elif request.form['model'] == 'combined':
+    elif request.form['embedding_model'] == 'combined':
         class_file = 'combined.json'
         npz_file = 'combined.npz'
-    elif request.form['model'] == 'custom':
+    elif request.form['embedding_model'] == 'custom':
         class_file = json_file_name
         npz_file = filename
 
