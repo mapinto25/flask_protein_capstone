@@ -708,14 +708,6 @@ def pca_visualize_data(npz_data,class_data, enzyme_id):
     
     n_components = 3
 
-    #load labels file
-    # lookup_d = json.load(open(f'./input/{class_file}'))
-
-    # #load npz file
-    # input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
-
-    # print(npz_data)
-    # print(type(npz_data))
     print("generating dataframes")
     embed_arr, embed_labels, embed_ids = gen_arr(npz_data, class_data)
     print("generating PCA")
@@ -731,36 +723,12 @@ def pca_visualize_data(npz_data,class_data, enzyme_id):
     col_labels = ["pc1", "pc2", "pc3", "target", "id", "source"]
 
     df_subset = principal_df.loc[rndperm[:N],:].copy()
-    # print(principal_df.shape)
-    # print(len(rndperm))
-    # print(df_subset.shape)
-    # print(type(df_subset))
-    # data_subset = df_subset[col_labels].values
-    # print(type(data_subset))
-    #########################################################################
-    ##### FIX THIS
-    ##setting the test datapoints to different symbols as determined by source
-    ### for now subsetting to 1/10 of the datapoints.  Later pass in and use the test dataset ids
-    # test_ids = principal_df.id[:int(len(principal_df)/10)]
-    # principal_df['source'][principal_df['id'].isin(test_ids)] = 'Test'
-    # specific_enzyme_embeddings = principal_df.loc[principal_df["id"] == enzyme_id]
-    # specific_enzyme = df_subset.loc[principal_df["id"] == enzyme_id]
 
-    # specific_enzyme_embeddings['source'] = enzyme_id
-    # specific_enzyme_embeddings['target'] = enzyme_id
-
-    # print(specific_enzyme_embeddings)
-    # print(type(specific_enzyme_embeddings))
-
-    # df_subset.append(specific_enzyme_embeddings)
     df_subset.loc[df_subset["id"] == enzyme_id, "source"] = enzyme_id
-    # print(df_subset)
-    # print(df_subset[df_subset["id"] == enzyme_id])
 
     print("generating plot")
 
     # Adjust PCA according to the number of components
-    # if n_components == 3:
     fig = px.scatter_3d(
         df_subset,
         x="pc1",
@@ -773,39 +741,9 @@ def pca_visualize_data(npz_data,class_data, enzyme_id):
         height=750,
         color_discrete_sequence=px.colors.qualitative.G10,
     )
-    # if n_components == 2:
-    #     fig = px.scatter(
-    #         principal_df,
-    #         x="pc1",
-    #         y="pc2",
-    #         color="target",
-    #         hover_name="id",
-    #         symbol = 'source',
-    #         color_discrete_sequence=px.colors.qualitative.G10,
-    #     )
 
-    text = '''
-    
-    <a href="/predictions" target="_self"> Back </a>
-             
-   
-    '''
-
-    # print(fig.to_json())
     div = plotly.offline.plot(fig, include_plotlyjs=False, output_type='div')
-    # print(div)
     
-    title = text +'\n' + 'PCA Enzyme Data'
-    fig.update_layout(
-    height=800,
-    title_text= title
-    )
-    
-    fig.write_html("templates/pca.html")
-
-    file = open("templates/pca.html","a")
-    file.write(text)
-    file.close()
     return div
   
 
