@@ -433,7 +433,6 @@ def predict():
     # Calculate random permutation of the embeddings array
     get_random_subset(embeddings_per_enzyme)
 
-    # pca_div = pca_visualize_data(embeddings_per_enzyme,enzyme_to_class)
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -585,8 +584,7 @@ def get_random_subset(embeddings_array):
     np.random.seed(42)
 
     global rndperm
-    # print(len(embeddings_array))
-    # print(len(embeddings_array.keys()))
+
     embeddings = list(embeddings_array.keys())
     rndperm = np.random.permutation(len(embeddings))
     print(len(rndperm))
@@ -640,7 +638,6 @@ def compare_pca_to_tsne(npz_data, class_data, enzyme_id):
 
     umap_2d = umap.UMAP(n_components=2, init='random', random_state=0)
     proj_2d = umap_2d.fit_transform(data_subset)
-    # print(proj_2d)
 
     df_subset['tsne-2d-one'] = tsne_results[:,0]
     df_subset['tsne-2d-two'] = tsne_results[:,1]
@@ -650,9 +647,6 @@ def compare_pca_to_tsne(npz_data, class_data, enzyme_id):
 
     df_subset['umap_one'] = proj_2d[:,0]
     df_subset['umap_two'] = proj_2d[:,1]
-
-    # print(df_subset)
-
 
     df_subset.loc[df_subset["id"] == enzyme_id, "label"] = enzyme_id
 
