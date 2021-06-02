@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, flash, session, send_from_directory, send_file
-import pandas as pd
-import numpy as np
+
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier, NearestNeighbors
@@ -9,6 +8,9 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+
+import umap
 
 import plotly.express as px
 import plotly
@@ -17,6 +19,9 @@ import sys
 import os
 import csv
 import zipfile
+import time
+import pandas as pd
+import numpy as np
 
 from werkzeug.utils import secure_filename
 
@@ -25,6 +30,7 @@ app.config['UPLOAD_FOLDER'] = './input'
 ALLOWED_EXTENSIONS = set(['npz', 'NPZ', 'json', 'JSON'])
 
 DECIMAL_POINTS = 3
+N = 2500
 
 #File extension checking
 def allowed_filename(filename):
@@ -66,7 +72,7 @@ def get_results():
 
 @app.route('/enzyme/<enzyme_id>', methods=['GET'])
 def enzyme(enzyme_id):
-    global current_enzyme_global_data
+    # global current_enzyme_global_data
     known_enzyme = False
     known_enzyme_classification = ""
 
@@ -76,6 +82,13 @@ def enzyme(enzyme_id):
     if enzyme_id in enzyme_to_class:
         known_enzyme = True
         known_enzyme_classification = enzyme_to_class[enzyme_id]
+
+    pca_div = pca_visualize_data(embeddings_per_enzyme, enzyme_to_class, enzyme_id)
+    tsne_div, t_pca_div, tsne_pca_div, umap_div, pca_v_ratio, pca50_v_ratio = compare_pca_to_tsne(embeddings_per_enzyme, enzyme_to_class, enzyme_id)
+
+    actual_closest_enzyme_class = {}
+    for enzyme in enzyme_to_closest:
+        actual_closest_enzyme_class[enzyme] = enzyme_to_class.get(enzyme, "N/A")
 
     return render_template("enzyme.html", 
                            probabilities = enzyme_confidences, 
@@ -89,7 +102,14 @@ def enzyme(enzyme_id):
                            known_enzyme_classification = known_enzyme_classification,
                            enzyme_id = enzyme_id,
                            enzyme_to_class_predicted = enzyme_to_class_predicted,
-                           pca = pca_div)
+                           actual_closest_enzyme_class = actual_closest_enzyme_class,
+                           pca = pca_div,
+                           tsne = tsne_div,
+                           t_pca = t_pca_div,
+                           tsne_pca = tsne_pca_div,
+                           umap = umap_div,
+                           pca_v_ratio = pca_v_ratio,
+                           pca50_v_ratio = pca50_v_ratio)
 
 @app.route('/enzyme/pca.html')
 def get_pca():
@@ -133,7 +153,6 @@ def predict():
         npz_file = filename
 
     global embeddings_per_enzyme
-    global enzyme_list
 
     embeddings_per_enzyme = {}
     enzyme_list = []
@@ -159,7 +178,6 @@ def predict():
 
     all_data['enzyme_non_enzyme'] = enzyme_non_enzyme_list
     embedings = []
-
 
     for enzyme in enzyme_list:
         word_embedidng = list(embeddings_per_enzyme[enzyme])
@@ -410,9 +428,11 @@ def predict():
         f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
         accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
-    global pca_div
+    # global pca_div
 
-    pca_div = pca_visualize_data(embeddings_per_enzyme,enzyme_to_class)
+    # Calculate random permutation of the embeddings array
+    get_random_subset(embeddings_per_enzyme)
+
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -529,7 +549,6 @@ def download_all():
             attachment_filename= 'Enz_NonEnz_Results.zip',
             as_attachment = True)
 
-
 def write_to_csv(return_json):
     data_file = open('./results/result_file.csv', 'w')
   
@@ -560,7 +579,120 @@ def gen_arr(embeddings, seq_id_to_label):
         ids.append(key)
     return np.array(output), labels, ids
 
-def pca_visualize_data(npz_data,class_data):
+def get_random_subset(embeddings_array):
+    # For reproducability of the results
+    np.random.seed(42)
+
+    global rndperm
+
+    embeddings = list(embeddings_array.keys())
+    rndperm = np.random.permutation(len(embeddings))
+    print(len(rndperm))
+    return rndperm
+
+def create_features_df(embeddings_array, embeddings_labels, embedding_ids):
+    feat_cols = [ 'feature'+str(i) for i in range(embeddings_array.shape[1]) ]
+
+    df = pd.DataFrame(embeddings_array,columns=feat_cols)
+
+    df['label'] = embeddings_labels
+    df['id'] = embedding_ids
+
+    return df, feat_cols
+
+def subset_visualize_data(embeddings_array, embeddings_labels, embeddings_ids):
+    features_df, feat_cols = create_features_df(embeddings_array, embeddings_labels, embeddings_ids)
+
+    df_subset = features_df.loc[rndperm[:N],:].copy()
+    data_subset = df_subset[feat_cols].values
+
+    return df_subset, data_subset
+
+def compare_pca_to_tsne(npz_data, class_data, enzyme_id):
+    embed_arr, embed_labels, embed_ids = gen_arr(npz_data, class_data)
+
+    df_subset, data_subset = subset_visualize_data(embed_arr, embed_labels, embed_ids)
+
+    pca = PCA(n_components=3)
+    pca_result = pca.fit_transform(data_subset)
+    df_subset['pca-one'] = pca_result[:,0]
+    df_subset['pca-two'] = pca_result[:,1] 
+    df_subset['pca-three'] = pca_result[:,2]
+    print('Explained variation per principal component: {}'.format(pca.explained_variance_ratio_))
+    pca_variance_ratio = round(np.sum(pca.explained_variance_ratio_), DECIMAL_POINTS)
+
+    time_start = time.time()
+    tsne = TSNE(n_components=2, verbose=1, perplexity=40, n_iter=300)
+    tsne_results = tsne.fit_transform(data_subset)
+    print('t-SNE done! Time elapsed: {} seconds'.format(time.time()-time_start))
+
+    pca_50 = PCA(n_components=50)
+    pca_result_50 = pca_50.fit_transform(data_subset)
+    print('Cumulative explained variation for 50 principal components: {}'.format(np.sum(pca_50.explained_variance_ratio_)))
+    pca_50_variance_ratio = round(np.sum(pca_50.explained_variance_ratio_), DECIMAL_POINTS)
+
+    time_start = time.time()
+    tsne = TSNE(n_components=2, verbose=0, perplexity=40, n_iter=300)
+    tsne_pca_results = tsne.fit_transform(pca_result_50)
+    print('t-SNE done! Time elapsed: {} seconds'.format(time.time()-time_start))
+
+    umap_2d = umap.UMAP(n_components=2, init='random', random_state=0)
+    proj_2d = umap_2d.fit_transform(data_subset)
+
+    df_subset['tsne-2d-one'] = tsne_results[:,0]
+    df_subset['tsne-2d-two'] = tsne_results[:,1]
+
+    df_subset['tsne-pca50-one'] = tsne_pca_results[:,0]
+    df_subset['tsne-pca50-two'] = tsne_pca_results[:,1]
+
+    df_subset['umap_one'] = proj_2d[:,0]
+    df_subset['umap_two'] = proj_2d[:,1]
+
+    df_subset.loc[df_subset["id"] == enzyme_id, "label"] = enzyme_id
+
+    tsne_fig = px.scatter(
+            df_subset, 
+            x="tsne-2d-one", 
+            y="tsne-2d-two",
+            color=df_subset.label, 
+            hover_name="id",
+            labels={'color': 'label', 'source': 'source'}
+        )
+    pca_fig = px.scatter(
+            df_subset,
+            x="pca-one",
+            y="pca-two",
+            color=df_subset.label,
+            hover_name="id",
+            color_discrete_sequence=px.colors.qualitative.G10,
+        )
+    tsne_pca_fig = px.scatter(
+            df_subset, 
+            x="tsne-pca50-one", 
+            y="tsne-pca50-two",
+            color=df_subset.label, 
+            hover_name="id",
+            labels={'color': 'label', 'source': 'source'}
+        )
+
+    umap_fig = px.scatter(
+            df_subset, 
+            x="umap_one", 
+            y="umap_two",
+            color=df_subset.label, 
+            hover_name="id",
+            labels={'color': 'label', 'source': 'source'}
+        )
+
+    tsne_div = plotly.offline.plot(tsne_fig, include_plotlyjs=False, output_type='div')
+    pca_div = plotly.offline.plot(pca_fig, include_plotlyjs=False, output_type='div')
+    tsne_pca_div = plotly.offline.plot(tsne_pca_fig, include_plotlyjs=False, output_type='div')
+    umap_div = plotly.offline.plot(umap_fig, include_plotlyjs=False, output_type='div')
+
+    return tsne_div, pca_div, tsne_pca_div, umap_div, pca_variance_ratio, pca_50_variance_ratio,
+
+
+def pca_visualize_data(npz_data,class_data, enzyme_id):
     """
     Prepare and render an interactive plotly PCA visualization given the following:
         * n_components: Number of PCA components (must be 2 or 3)
@@ -570,18 +702,10 @@ def pca_visualize_data(npz_data,class_data):
     
     n_components = 3
 
-    #load labels file
-    # lookup_d = json.load(open(f'./input/{class_file}'))
-
-    # #load npz file
-    # input_data = np.load(f'./input/{npz_file}', allow_pickle=True)
-
-    # print(npz_data)
-    # print(type(npz_data))
     print("generating dataframes")
     embed_arr, embed_labels, embed_ids = gen_arr(npz_data, class_data)
     print("generating PCA")
-    pca = PCA(n_components=3)
+    pca = PCA(n_components=n_components)
     principal_components = pca.fit_transform(embed_arr)
     principal_df = pd.DataFrame(
         data=principal_components, columns=["pc1", "pc2", "pc3"]
@@ -590,20 +714,17 @@ def pca_visualize_data(npz_data,class_data):
     principal_df["id"] = embed_ids
     principal_df["source"] = "Train"
     
+    col_labels = ["pc1", "pc2", "pc3", "target", "id", "source"]
 
-    #########################################################################
-    ##### FIX THIS
-    ##setting the test datapoints to different symbols as determined by source
-    ### for now subsetting to 1/10 of the datapoints.  Later pass in and use the test dataset ids
-    test_ids = principal_df.id[:int(len(principal_df)/10)]
-    principal_df['source'][principal_df['id'].isin(test_ids)] = 'Test'
+    df_subset = principal_df.loc[rndperm[:N],:].copy()
+
+    df_subset.loc[df_subset["id"] == enzyme_id, "source"] = enzyme_id
 
     print("generating plot")
 
     # Adjust PCA according to the number of components
-    # if n_components == 3:
     fig = px.scatter_3d(
-        principal_df,
+        df_subset,
         x="pc1",
         y="pc2",
         z="pc3",
@@ -614,39 +735,9 @@ def pca_visualize_data(npz_data,class_data):
         height=750,
         color_discrete_sequence=px.colors.qualitative.G10,
     )
-    # if n_components == 2:
-    #     fig = px.scatter(
-    #         principal_df,
-    #         x="pc1",
-    #         y="pc2",
-    #         color="target",
-    #         hover_name="id",
-    #         symbol = 'source',
-    #         color_discrete_sequence=px.colors.qualitative.G10,
-    #     )
 
-    text = '''
-    
-    <a href="/predictions" target="_self"> Back </a>
-             
-   
-    '''
-
-    # print(fig.to_json())
     div = plotly.offline.plot(fig, include_plotlyjs=False, output_type='div')
-    # print(div)
     
-    title = text +'\n' + 'PCA Enzyme Data'
-    fig.update_layout(
-    height=800,
-    title_text= title
-    )
-    
-    fig.write_html("templates/pca.html")
-
-    file = open("templates/pca.html","a")
-    file.write(text)
-    file.close()
     return div
   
 

@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - anaconda
+  - bioconda
+  
+dependencies:
+  - python 3
+  - UMAP
+  - Flask
+  - Plotly
