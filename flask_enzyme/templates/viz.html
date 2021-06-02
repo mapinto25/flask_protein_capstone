@@ -36,16 +36,19 @@
           </div>
       </div>
     </nav>    
-    <div class="jumbotron text-center" style="margin-bottom:0">
-      <h1>DEEPre Enzyme Class Distribution</h1>
+    <div class="jumbotron" >
+      <h3>Enzyme Class Distribution from combined DEEPre and ECPred datasets</h3>
     </div> 
     <p style="text-align: center">
     </p>
     <div class="container">
       <!-- Create a div where the graph will take place -->
-      <div id="piechart_dataviz"></div>
+     <div id="piechart_dataviz"></div>
+     <img src="./images/StackedBar.png" width="700" height="400"/>
+     <br><br><br><br>
       <div id="selectMe"></div>
       <div id="chartContainer"></div>
+      
     </div>
     <script> 
     // set the dimensions and margins of the graph
@@ -65,12 +68,13 @@ var svg = d3.select("#piechart_dataviz")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 // Create dummy data
-var data_p = {'Oxidoreductases 15%': 3343, 'Transferases 38.4%': 8517, 'Hydrolases 26.7%':5917, 'Lyases 6.9%':1532, 'Isomerases 5.4%':1193, 'Ligases 7.5%':1666}
+//var data_p = {'Oxidoreductases 15%': 3343, 'Transferases 38.4%': 8517, 'Hydrolases 26.7%':5917, 'Lyases 6.9%':1532, 'Isomerases 5.4%':1193, 'Ligases 7.5%':1666}
+var data_p = {'Oxidoreductases 14.8%': 40918, 'Transferases 35.6%': 98178, 'Hydrolases 24.2%':66516, 'Lyases 8.8%':24250, 'Isomerases 5.4%':14914, 'Ligases 11.2%':31022}
 
 
 // set the color scale
 var color = d3.scaleOrdinal()
-  .domain(["Oxidoreductases 15%", "Transferases 38.4%", "Hydrolases 26.7%", "Lyases 6.9%", "Isomerases 5.4%", "Ligases 7.5%"])
+  .domain(["Oxidoreductases 14.8%", "Transferases 35.6%", "Hydrolases 24.2%", "Lyases 8.8%", "Isomerases 5.4%", "Ligases 11.2%"])
   .range(d3.schemeDark2);
 
 // Compute the position of each group on the pie:
@@ -151,27 +155,27 @@ const innerHeight = h - margins.top - margins.bottom;
 data =[
     {
 enzymeClass: 'Oxidoreductases',
-frequency: 3343
+frequency: 40918,
     },
     {
 enzymeClass: 'Transferases',
-frequency: 8517
+frequency: 98178
     },
     {
 enzymeClass: 'Hydrolases',
-frequency: 5917
+frequency: 66516
     },
     {
 enzymeClass: 'Lyases',
-frequency: 1532
+frequency: 24250
     },
     {
 enzymeClass: 'Isomerases',
-frequency: 1193
+frequency: 14914
     },
     {
 enzymeClass: 'Ligases',
-frequency: 1666
+frequency: 31022
     }
 ]
   // Create a select dropdown
@@ -187,7 +191,7 @@ frequency: 1666
     .append("select")
     .attr("id", "selection")
     .attr("name", "tasks")
-    // .style("font-size", "19px")
+    //.style("font-size", "19px")
     .selectAll("option")
     .data(selectItems)
     .enter()
@@ -260,7 +264,9 @@ frequency: 1666
       .attr("y", d => yScale(d.frequency))
       .attr("width", innerWidth/data.length-1.5)
       .attr("height", (d) => innerHeight - yScale(d.frequency))
-      .attr("fill", d => d.frequency == d3.max(data, d => d.frequency) ? "orange" : "#f4c430");
+      .attr("fill", d => d.frequency == d3.max(data, d => d.frequency) ? "orange" : "#f4c430")
+     
+      
 
     // Add labels to bars
     mainG.selectAll("text")
@@ -272,9 +278,9 @@ frequency: 1666
       .attr("x", (d,i) => xScale(d.enzymeClass) + innerWidth/data.length/2)
       .attr("y", d => yScale(d.frequency)-5)
       .attr("font-family", "sans-serif")
-      .attr("font-size", "9px")
+      .attr("font-size", "12px")
       .attr("font-weight", "bold")
-      .attr("fill", "red");
+      .attr("fill", "black");
 
     mainG
       .append("g")
@@ -293,6 +299,8 @@ frequency: 1666
     showChart.appendChild(chartDIV);
 
   }
+
+  
 
 //});
     </script> 
