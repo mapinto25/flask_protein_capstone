@@ -36,7 +36,7 @@
           </div>
       </div>
     </nav>    
-    <div class="jumbotron" >
+    <div class="jumbotron text-center" >
       <h3>Enzyme Class Distribution from combined DEEPre and ECPred datasets</h3>
     </div> 
     <p style="text-align: center">
@@ -44,7 +44,7 @@
     <div class="container">
       <!-- Create a div where the graph will take place -->
      <div id="piechart_dataviz"></div>
-     <img src="./images/StackedBar.png" width="700" height="400"/>
+     <img src="/static/img/StackedBar.png" width="700" height="400"/>
      <br><br><br><br>
       <div id="selectMe"></div>
       <div id="chartContainer"></div>
@@ -285,7 +285,8 @@ frequency: 31022
     mainG
       .append("g")
       .call(xAxis)
-      .attr("transform", `translate(0, ${innerHeight})`);
+      .attr("transform", `translate(0, ${innerHeight})`)
+      .attr("font-size", "18px");
     
     mainG
       .append("g")
