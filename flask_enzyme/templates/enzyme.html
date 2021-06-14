@@ -141,6 +141,8 @@
           
         </div>
       </div> -->
+
+      {% if tsne_div != 'N/A' %}
       <div class="row">
         <div class="col-sm-6">
           {{tsne | safe}}
@@ -157,11 +159,14 @@
           {{umap | safe}}
         </div>
       </div>
+      {% endif %}
     </div>
 
+    {% if tsne_div != 'N/A' %}
     <div class="container pca-container" style="width: 100% !important;">
       {{pca | safe}}
     </div>
+    {% endif %}
     <div>
       <script>
         var confusionMatrix = {{matrix | safe }};

@@ -46,6 +46,7 @@ f1Score = None
 accuracy = None
 enzyme_to_closest = {}
 model = None
+model_type = None
 
 @app.route('/')
 def home_page():
@@ -84,8 +85,12 @@ def enzyme(enzyme_id):
         known_enzyme = True
         known_enzyme_classification = enzyme_to_class[enzyme_id]
 
-    pca_div = pca_visualize_data(embeddings_per_enzyme, enzyme_to_class, enzyme_id)
-    tsne_div, t_pca_div, tsne_pca_div, umap_div, pca_v_ratio, pca50_v_ratio = compare_pca_to_tsne(embeddings_per_enzyme, enzyme_to_class, enzyme_id)
+    if model_type == 'custom':
+        pca_div = pca_visualize_data(embeddings_per_enzyme, enzyme_to_class, enzyme_id)
+        tsne_div, t_pca_div, tsne_pca_div, umap_div, pca_v_ratio, pca50_v_ratio = compare_pca_to_tsne(embeddings_per_enzyme, enzyme_to_class, enzyme_id)
+    else:
+        pca_div  = None 
+        tsne_div, t_pca_div, tsne_pca_div, umap_div, pca_v_ratio, pca50_v_ratio = 'N/A', 'N/A', 'N/A','N/A', 'N/A' ,'N/A'
 
     actual_closest_enzyme_class = {}
     for enzyme in enzyme_to_closest:
@@ -182,63 +187,65 @@ def predict():
         "dtree" : "dtree"
     }
 
-
-    if request.form['embedding_model'] == 'ESM':
-        class_file = 'enzyme_to_class_esm.json'
-        npz_file = 'esm.npz'
-    elif request.form['embedding_model'] == 'tape':
-        class_file = 'enzyme_to_class_tape.json'
-        npz_file = 'tape.npz'
-    elif request.form['embedding_model'] == 'combined':
-        class_file = 'combined.json'
-        npz_file = 'combined.npz'
-    elif request.form['embedding_model'] == 'custom':
+    if request.form['embedding_model'] == 'custom':
         class_file = json_file_name
         npz_file = filename
 
-    global embeddings_per_enzyme
+        global embeddings_per_enzyme
 
-    embeddings_per_enzyme = {}
-    enzyme_list = []
+        embeddings_per_enzyme = {}
+        enzyme_list = []
 
-    with np.load(f'./input/{npz_file}', allow_pickle=True) as data:
-        for a in data:
-            x = data[a].item()
-            embeddings_per_enzyme[a] = x['avg']
-            enzyme_list.append(a)
+        with np.load(f'./input/{npz_file}', allow_pickle=True) as data:
+            for a in data:
+                if request.form['embedding_model'] != 'tape':
+                    x = data[a]
+                    embeddings_per_enzyme[a] = x
+                else:
+                    x = data[a].item()
+                    embeddings_per_enzyme[a] = x['avg']
+                enzyme_list.append(a)
 
-    all_data = pd.DataFrame()
 
-    all_data['Name'] = enzyme_list
+        all_data = pd.DataFrame()
 
-    global enzyme_to_class
+        all_data['Name'] = enzyme_list
 
-    with open(f'./input/{class_file}') as f:
-        enzyme_to_class = json.load(f)
+        global enzyme_to_class
 
-    enzyme_non_enzyme_list, class_list = process_enzyme_labels(enzyme_list, enzyme_to_class)
-    
-    all_data['classes'] = class_list
+        with open(f'./input/{class_file}') as f:
+            enzyme_to_class = json.load(f)
 
-    all_data['enzyme_non_enzyme'] = enzyme_non_enzyme_list
-    embedings = []
+        enzyme_non_enzyme_list, class_list = process_enzyme_labels(enzyme_list, enzyme_to_class)
+        
+        all_data['classes'] = class_list
 
-    for enzyme in enzyme_list:
-        word_embedidng = list(embeddings_per_enzyme[enzyme])
-        embedings.append(word_embedidng)
-    
-    all_data['embeddings'] = embedings
+        all_data['enzyme_non_enzyme'] = enzyme_non_enzyme_list
+        embedings = []
+
+        for enzyme in enzyme_list:
+            word_embedidng = list(embeddings_per_enzyme[enzyme])
+            embedings.append(word_embedidng)
+        
+        all_data['embeddings'] = embedings
+
+
 
     test = pd.DataFrame()
-
-
     test_enzyme_list= []
     test_embeddings_per_enzyme = {}
 
+
+
     with np.load(f'./input/{test_filename}', allow_pickle=True) as data:
+        print(test_filename)
         for a in data:
-            x = data[a].item()
-            test_embeddings_per_enzyme[a] = x['avg']
+            if request.form['embedding_model'] != 'tape':
+                x = data[a]
+                test_embeddings_per_enzyme[a] = x
+            else:
+                x = data[a].item()
+                test_embeddings_per_enzyme[a] = x['avg']
             test_enzyme_list.append(a)
 
     test['Name'] = test_enzyme_list
@@ -250,18 +257,16 @@ def predict():
     
     test['embeddings'] = embedings
 
-    print(test.shape[0])
-    print(all_data.shape[0])
-
-    train, validation = train_test_split(all_data)
+    if request.form['embedding_model'] == 'custom':
+        train, validation = train_test_split(all_data)
 
 
-    x_train = list(train['embeddings'])
-    y_train_classes = train[['classes']]
-    y_train_enzyme = train[['enzyme_non_enzyme']]
+        x_train = list(train['embeddings'])
+        y_train_classes = train[['classes']]
+        y_train_enzyme = train[['enzyme_non_enzyme']]
 
-    x_val = list(validation['embeddings'])
-    y_val_class = validation['classes']
+        x_val = list(validation['embeddings'])
+        y_val_class = validation['classes']
 
     x_test = list(test['embeddings'])
 
@@ -275,6 +280,10 @@ def predict():
     global accuracy
     global model
     global enzyme_to_closest
+    global model_type
+
+
+    model_type = request.form['embedding_model']
 
     #general_predict_function
 
@@ -283,7 +292,11 @@ def predict():
 
 
     if request.form['embedding_model'] != 'custom':
+        print('using pickle')
         file_name = classification_pickle[request.form['embedding_model']][request.form['down_stream_model']][0]
+        print(file_name)
+        x_train = []
+        y_train_classes = pd.DataFrame()
         with open(f'../../../Downloads/{file_name}', 'rb') as fp:
             clf = pickle.load(fp)
     else:
@@ -304,11 +317,12 @@ def predict():
 
 
     x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
-    y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
 
 
     nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
     distances, indices = nbrs.kneighbors(x_test_classes)
+
+    print('nearest neighbors obtain')
 
 
     i = 0
@@ -325,6 +339,9 @@ def predict():
         file_name = classification_pickle[request.form['embedding_model']][request.form['down_stream_model']][1]
         with open(f'../../../Downloads/{file_name}', 'rb') as fp:
             clf = pickle.load(fp)
+        matrix = np.array([])
+        f1Score = 'NA'
+        accuracy = None
     else:
         if model == 'svc':
             clf = SVC(C = 10, kernel = 'rbf', gamma='auto', probability=True)
@@ -336,22 +353,25 @@ def predict():
             clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
         elif model == 'nvb':
             clf = GaussianNB()
+        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
         clf.fit(x_train_classes, y_train_classes)
+
+
+        y_val_classes = clf.predict(x_val)
+        matrix = confusion_matrix(y_val_class, y_val_classes)
+        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
+        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
+
+        get_random_subset(embeddings_per_enzyme)
+
             
     y_pred_classes = clf.predict(x_test_classes)
     pred_classes = clf.predict_proba(x_test_classes)
 
-    y_val_classes = clf.predict(x_val)
-
-    matrix = confusion_matrix(y_val_class, y_val_classes)
-    f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
-    accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
     # global pca_div
 
     # Calculate random permutation of the embeddings array
-    get_random_subset(embeddings_per_enzyme)
-
     return_json = {}
     return_json['prob_class'] = {}
     return_json['prob_enzyme'] = {}
@@ -400,6 +420,7 @@ def predict():
     ### write results to csv file
    # write_to_csv(return_json)
 
+    print('returning html')
     return output_from_parsed_template
 
 def process_enzyme_labels(enzyme_list, enzyme_to_class):
@@ -434,8 +455,6 @@ def reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, p
             x_test_classes.append(x_test[i])
             test_enzyme_list_is_enzyme.append(test_enzyme_list[i])
         else:
-            print(y_pred_enzyme[i])
-            print(pred_enzyme[i])
             test_enzyme_list_non_enzyme.append(test_enzyme_list[i])
             pred_enzyme_filtered.append(np.around(pred_enzyme[i], decimals=DECIMAL_POINTS))
             y_pred_enzyme_filtered.append(y_pred_enzyme[i])
