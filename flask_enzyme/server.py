@@ -22,6 +22,7 @@ import zipfile
 import time
 import pandas as pd
 import numpy as np
+import pickle
 
 from werkzeug.utils import secure_filename
 
@@ -139,6 +140,49 @@ def predict():
                 submitted_file.save(os.path.join(app.config['UPLOAD_FOLDER'], test_filename))
 
 
+
+    classification_pickle = {
+        "ESM" : {
+            "svc": (),
+            "deep_learning" : (),
+            "knn" : ('knn_enzyme_non_enzyme_esm.pkl' , 'knn_enzyme_class_esm.pkl' ),
+            "naive" : (),
+            "dtree" : ()
+        }, 
+        "tape" :  {
+            "svc": (),
+            "deep_learning" : (),
+            "knn" : (),
+            "naive" : (),
+            "dtree" : ()
+        },
+        
+        "combined" :  {
+            "svc": (),
+            "deep_learning" : (),
+            "knn" : (),
+            "naive" : (),
+            "dtree" : ()
+        }
+    }
+
+    model_name_formatted_lookup = {
+        "svc": "SVC",
+        "deep_learning" : "MLP",
+        "knn" : "KNN",
+        "naive" : "Naive Bayes" ,
+        "dtree" : "Random Forest"
+    }
+
+    model_name_lookup = {
+        "svc": "svc",
+        "deep_learning" : "mlp",
+        "knn" : "knn",
+        "naive" : 'nvb',
+        "dtree" : "dtree"
+    }
+
+
     if request.form['embedding_model'] == 'ESM':
         class_file = 'enzyme_to_class_esm.json'
         npz_file = 'esm.npz'
@@ -232,201 +276,76 @@ def predict():
     global model
     global enzyme_to_closest
 
-    if request.form['down_stream_model'] == 'knn':
-        neigh = KNeighborsClassifier(n_neighbors=5)
-        neigh.fit(x_train, y_train_enzyme)
-        y_pred_enzyme = neigh.predict(x_test)
-        pred_enzyme = neigh.predict_proba(x_test)
+    #general_predict_function
 
-        print(y_pred_enzyme)
-
-        x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme = reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
-
-        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+    model = model_name_lookup[request.form['down_stream_model']]
+    model_name_formatted = model_name_formatted_lookup[request.form['down_stream_model']]
 
 
-        nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
-        distances, indices = nbrs.kneighbors(x_test_classes)
-
-        model = 'knn'
-
-        i = 0
-        for index in indices:
-            index_nearest = int(index[1])
-            index_second_nearest = int(index[2])
-            index_third_nearest = int(index[3])
-
-            current_enzyme = test_enzyme_list_is_enzyme[i]
-            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest], test_enzyme_list_is_enzyme[index_third_nearest]]
-            i +=1
-
-        neigh.fit(x_train_classes, y_train_classes)
-        y_pred_classes = neigh.predict(x_test_classes)
-        pred_classes = neigh.predict_proba(x_test_classes)
-        model_name_formatted = 'KNN'
-
-        y_val_classes = neigh.predict(x_val)
-
-        matrix = confusion_matrix(y_val_class, y_val_classes)
-        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
-        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
-
-    elif request.form['down_stream_model'] == 'svc':
-        model = 'svc'
-        model_name_formatted = 'SVC'
-
-
-        clf = SVC(C = 10, kernel = 'rbf', gamma='auto', probability=True)
+    if request.form['embedding_model'] != 'custom':
+        file_name = classification_pickle[request.form['embedding_model']][request.form['down_stream_model']][0]
+        with open(f'../../../Downloads/{file_name}', 'rb') as fp:
+            clf = pickle.load(fp)
+    else:
+        if model == 'svc':
+            clf = SVC(C = 10, kernel = 'rbf', gamma='auto', probability=True)
+        elif model == "mlp":
+            clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
+        elif model == "knn":
+            clf = KNeighborsClassifier(n_neighbors=5)
+        elif model == 'dtree':
+            clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
+        elif model == 'nvb':
+            clf = GaussianNB()
         clf.fit(x_train, y_train_enzyme)
-        y_pred_enzyme = clf.predict(x_test)
-        pred_enzyme = clf.predict_proba(x_test)
+
+    y_pred_enzyme = clf.predict(x_test)
+    pred_enzyme = clf.predict_proba(x_test)
 
 
-        x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
+    x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
+    y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
 
-        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
+
+    nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
+    distances, indices = nbrs.kneighbors(x_test_classes)
 
 
-        nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
-        distances, indices = nbrs.kneighbors(x_test_classes)
+    i = 0
+    for index in indices:
+        index_nearest = int(index[1])
+        index_second_nearest = int(index[2])
+        index_third_nearest = int(index[3])
 
-        i = 0
-        for index in indices:
-            index_nearest = int(index[1])
-            index_second_nearest = int(index[2])
-            index_third_nearest = int(index[3])
+        current_enzyme = test_enzyme_list_is_enzyme[i]
+        enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest], test_enzyme_list_is_enzyme[index_third_nearest]]
+        i +=1
 
-            current_enzyme = test_enzyme_list_is_enzyme[i]
-            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest], test_enzyme_list_is_enzyme[index_third_nearest]]
-            i +=1
-
+    if request.form['embedding_model'] != 'custom':
+        file_name = classification_pickle[request.form['embedding_model']][request.form['down_stream_model']][1]
+        with open(f'../../../Downloads/{file_name}', 'rb') as fp:
+            clf = pickle.load(fp)
+    else:
+        if model == 'svc':
+            clf = SVC(C = 10, kernel = 'rbf', gamma='auto', probability=True)
+        elif model == "mlp":
+            clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
+        elif model == "knn":
+            clf = KNeighborsClassifier(n_neighbors=5)
+        elif model == 'dtree':
+            clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
+        elif model == 'nvb':
+            clf = GaussianNB()
         clf.fit(x_train_classes, y_train_classes)
-        y_pred_classes = clf.predict(x_test_classes)
-        pred_classes = clf.predict_proba(x_test_classes)
+            
+    y_pred_classes = clf.predict(x_test_classes)
+    pred_classes = clf.predict_proba(x_test_classes)
 
-        y_val_classes = clf.predict(x_val)
+    y_val_classes = clf.predict(x_val)
 
-        matrix = confusion_matrix(y_val_class, y_val_classes)
-        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
-        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
-
-    elif request.form['down_stream_model'] == 'deep_learning':
-
-        model = 'mlp'
-        clf = MLPClassifier(random_state=1, max_iter=300, hidden_layer_sizes=(100,))
-        model_name_formatted = 'MLP'
-
-        clf.fit(x_train, y_train_enzyme)
-        y_pred_enzyme = clf.predict(x_test)
-        pred_enzyme = clf.predict_proba(x_test)
-
-
-        x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
-
-        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
-
-
-        nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
-        distances, indices = nbrs.kneighbors(x_test_classes)
-
-        i = 0
-        for index in indices:
-            index_nearest = int(index[1])
-            index_second_nearest = int(index[2])
-            index_third_nearest = int(index[3])
-
-            current_enzyme = test_enzyme_list_is_enzyme[i]
-            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest], test_enzyme_list_is_enzyme[index_third_nearest]]
-            i +=1
-
-        clf.fit(x_train_classes, y_train_classes)
-        y_pred_classes = clf.predict(x_test_classes)
-        pred_classes = clf.predict_proba(x_test_classes)
-
-        y_val_classes = clf.predict(x_val)
-
-        matrix = confusion_matrix(y_val_class, y_val_classes)
-        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
-        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
-
-    elif request.form['down_stream_model'] == 'naive':
-        model = 'nvb'
-        clf =  GaussianNB()
-        model_name_formatted = 'Naive Bayes'
-
-        clf.fit(x_train, y_train_enzyme)
-        y_pred_enzyme = clf.predict(x_test)
-        pred_enzyme = clf.predict_proba(x_test)
-
-
-        x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
-
-        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
-
-
-        nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
-        distances, indices = nbrs.kneighbors(x_test_classes)
-
-
-        i = 0
-        for index in indices:
-            index_nearest = int(index[1])
-            index_second_nearest = int(index[2])
-            index_third_nearest = int(index[3])
-
-            current_enzyme = test_enzyme_list_is_enzyme[i]
-            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest], test_enzyme_list_is_enzyme[index_third_nearest]]
-            i +=1
-
-        clf.fit(x_train_classes, y_train_classes)
-        y_pred_classes = clf.predict(x_test_classes)
-        pred_classes = clf.predict_proba(x_test_classes)
-
-        y_val_classes = clf.predict(x_val)
-
-        matrix = confusion_matrix(y_val_class, y_val_classes)
-        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
-        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
-
-    elif request.form['down_stream_model'] == 'dtree':
-
-        model = 'dtree'
-        clf = RandomForestClassifier(max_depth =  20, min_samples_leaf =  2, min_samples_split= 5, random_state=0)
-        model_name_formatted = 'Random Forest'
-
-
-        clf.fit(x_train, y_train_enzyme)
-        y_pred_enzyme = clf.predict(x_test)
-        pred_enzyme = clf.predict_proba(x_test)
-
-
-        x_train_classes, x_test_classes, test_enzyme_list_is_enzyme, test_enzyme_list_non_enzyme, pred_enzyme, y_pred_enzyme =reduce_test_train_classes(x_train, x_test, y_train_classes, y_pred_enzyme, pred_enzyme, test_enzyme_list)
-        y_train_classes = y_train_classes[y_train_classes['classes'] != 'NA']
-
-
-        nbrs = NearestNeighbors(n_neighbors=4, algorithm='ball_tree').fit(x_test_classes)
-        distances, indices = nbrs.kneighbors(x_test_classes)
-
-
-        i = 0
-        for index in indices:
-            index_nearest = int(index[1])
-            index_second_nearest = int(index[2])
-            index_third_nearest = int(index[3])
-
-            current_enzyme = test_enzyme_list_is_enzyme[i]
-            enzyme_to_closest[current_enzyme] = [test_enzyme_list_is_enzyme[index_nearest], test_enzyme_list_is_enzyme[index_second_nearest], test_enzyme_list_is_enzyme[index_third_nearest]]
-            i +=1
-
-        clf.fit(x_train_classes, y_train_classes)
-        y_pred_classes = clf.predict(x_test_classes)
-        pred_classes = clf.predict_proba(x_test_classes)
-
-        y_val_classes = clf.predict(x_val)
-
-        matrix = confusion_matrix(y_val_class, y_val_classes)
-        f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
-        accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
+    matrix = confusion_matrix(y_val_class, y_val_classes)
+    f1Score = round(f1_score(y_val_class, y_val_classes, average='macro'), DECIMAL_POINTS)
+    accuracy = round(accuracy_score(y_val_class, y_val_classes), DECIMAL_POINTS)
 
     # global pca_div
 
