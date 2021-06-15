@@ -171,6 +171,33 @@ def predict():
         }
     }
 
+
+
+    accuracy_lookup = {
+        "ESM" : {
+            "svc": 'N/A',
+            "deep_learning" : 99.2,
+            "knn" : 98.6 ,
+            "naive" : 62.1 ,
+            "dtree" : 97.8
+        }, 
+        "tape" :  {
+            "svc": 57.5,
+            "deep_learning" : 66.1,
+            "knn" : 64.8,
+            "naive" : 44.6,
+            "dtree" :46.3
+        },
+        
+        "combined" :  {
+            "svc": 96.5,
+            "deep_learning" : 98.9,
+            "knn" : 96.9,
+            "naive" : 60.7,
+            "dtree" : 96.8
+        }
+    }
+
     model_name_formatted_lookup = {
         "svc": "SVC",
         "deep_learning" : "MLP",
@@ -341,7 +368,7 @@ def predict():
             clf = pickle.load(fp)
         matrix = np.array([])
         f1Score = 'NA'
-        accuracy = None
+        accuracy = accuracy_lookup[request.form['embedding_model']][request.form['down_stream_model']]
     else:
         if model == 'svc':
             clf = SVC(C = 10, kernel = 'rbf', gamma='auto', probability=True)
