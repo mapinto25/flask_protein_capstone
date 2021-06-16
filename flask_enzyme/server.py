@@ -148,26 +148,26 @@ def predict():
 
     classification_pickle = {
         "ESM" : {
-            "svc": (),
-            "deep_learning" : (),
+            "svc": ('svc_enzyme_non_enzyme_esm.pkl', 'svc_enzyme_class_esm.pkl'),
+            "deep_learning" : ('mlp_enzyme_non_enzyme_esm.pkl', 'mlp_enzyme_class_esm.pkl'),
             "knn" : ('knn_enzyme_non_enzyme_esm.pkl' , 'knn_enzyme_class_esm.pkl' ),
-            "naive" : (),
-            "dtree" : ()
+            "naive" : ('gb_enzyme_non_enzyme_esm.pkl', 'gb_enzyme_class_esm.pkl'),
+            "dtree" : ('rf_enzyme_non_enzyme_esm.pkl', 'rf_enzyme_class_esm.pkl')
         }, 
         "tape" :  {
-            "svc": (),
-            "deep_learning" : (),
-            "knn" : (),
-            "naive" : (),
-            "dtree" : ()
+            "svc": ('svc_enzyme_non_enzyme_tape.pkl', 'svc_enzyme_class_tape.pkl'),
+            "deep_learning" : ('mlp_enzyme_non_enzyme_tape.pkl','mlp_enzyme_class_tape.pkl'),
+            "knn" : ('knn_enzyme_non_enzyme_tape.pkl', 'knn_enzyme_class_tape.pkl'),
+            "naive" : ('gb_enzyme_non_enzyme_tape.pkl', 'gb_enzyme_class_tape.pkl'),
+            "dtree" : ('rf_enzyme_non_enzyme_tape.pkl', 'rf_enzyme_class_tape.pkl')
         },
         
         "combined" :  {
-            "svc": (),
-            "deep_learning" : (),
-            "knn" : (),
-            "naive" : (),
-            "dtree" : ()
+            "svc": ('svc_enzyme_non__enzyme_combined_embeddings.pkl', 'svc_enzyme_class_combined_embeddings.pkl'),
+            "deep_learning" : ('mlp_enzyme_non__enzyme_combined_embeddings.pkl', 'mlp_enzyme_class_combined_embeddings.pkl'),
+            "knn" : ('knn_enzyme_non__enzyme_combined_embeddings.pkl', 'knn_enzyme_class_combined_embeddings.pkl'),
+            "naive" : ('gb_enzyme_non__enzyme_combined_embeddings.pkl', 'gb_enzyme_class_combined_embeddings.pkl'),
+            "dtree" : ('rf_enzyme_non__enzyme_combined_embeddings.pkl', 'rf_enzyme_class_combined_embeddings.pkl')
         }
     }
 
@@ -324,7 +324,7 @@ def predict():
         print(file_name)
         x_train = []
         y_train_classes = pd.DataFrame()
-        with open(f'../../../Downloads/{file_name}', 'rb') as fp:
+        with open(f'./input/{file_name}', 'rb') as fp:
             clf = pickle.load(fp)
     else:
         if model == 'svc':
@@ -364,7 +364,7 @@ def predict():
 
     if request.form['embedding_model'] != 'custom':
         file_name = classification_pickle[request.form['embedding_model']][request.form['down_stream_model']][1]
-        with open(f'../../../Downloads/{file_name}', 'rb') as fp:
+        with open(f'./input/{file_name}', 'rb') as fp:
             clf = pickle.load(fp)
         matrix = np.array([])
         f1Score = 'NA'
