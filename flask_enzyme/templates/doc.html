@@ -105,75 +105,38 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                         <div class="card-body">
-                            <p><h3>STEP1: DOWNLOAD TAPE/ESM SCRIPTS (run.py, settings.json, batch.sh) FROM GIT REPO</h3>
-                            <p><h3>STEP2: EDIT SCRIPTS TO REFLECT XSEDE USER ACCOUNT</h3>
-                            <p><h3>STEP3: RUN SCRIPTS AND EXPORT GENERATED EMBEDDINGS TO LOCAL</h3>
+                            <p>Refer to the User Documentation for additional information on each step. The steps refer to the titles within the user documentation.</p>
+                            <p><a href="https://docs.google.com/document/d/1olO4hqB-vcKe6Hcxfkfew1q8uNWfBYtGYDqzXO-2lF4/edit#heading=h.sattenpunmap">Login to Expanse</a></p>
+                            <p><a href="https://docs.google.com/document/d/1olO4hqB-vcKe6Hcxfkfew1q8uNWfBYtGYDqzXO-2lF4/edit#heading=h.6whvfv640n4l">Derive TAPE Embeddings</a></p>
+                            <p><a href="https://docs.google.com/document/d/1olO4hqB-vcKe6Hcxfkfew1q8uNWfBYtGYDqzXO-2lF4/edit#heading=h.bt4hdqotd0sm">Derive ESM-1b Embeddings</a></p>
+                            <p><a href="https://docs.google.com/document/d/1olO4hqB-vcKe6Hcxfkfew1q8uNWfBYtGYDqzXO-2lF4/edit#heading=h.rf698jx5lz2y">Combining NPZ</a></p>
+                            
                             <br>
-                            <h4>TAPE - to run TAPE embeddings on Expanse, use the below run script</h4>
-                             </br>
-                            /cm/shared/apps/containers/singularity/tape-0.4-20210427.sif
-                            <br>
-                            #!/usr/bin/env bash<br>
-                            #SBATCH --job-name=tape-0.4-fake_enzyme_test<br>
-                            #SBATCH --account=use300<br>
-                            #SBATCH --partition=gpu-shared<br>
-                            #SBATCH --nodes=1<br>
-                            #SBATCH --ntasks-per-node=1<br>
-                            #SBATCH --cpus-per-task=10<br>
-                            #SBATCH --mem=93G<br>
-                            #SBATCH --gpus=1<br>
-                            #SBATCH --time=00:30:00<br>
-                            #SBATCH --output=%x.o%j.%N<br>
-                            <br>
-                            declare -xr SINGULARITY_MODULE='singularitypro/3.5'<br>
-                            declare -xr SINGULAIRTY_CONTAINER_DIR='/cm/shared/apps/containers/singularity'<br>
-                            <br>
-                            module purge<br>
-                            module load "${SINGULARITY_MODULE}"<br>
-                            module list<br>
-                            printenv<br>
-                            <br>
-                            time -p singularity exec --bind /expanse,/scratch --nv "${SINGULAIRTY_CONTAINER_DIR}/ciml/tape-0.4-20210427.sif" python -u run_tape.py</br>
-                            </p>
-                            <p>
-                            <h4>ESM-1b: to run ESM-1b embeddings on Expanse, use the below script</h4>
-                            <br>
-                            /cm/shared/apps/containers/singularity/esm-0.3.1-20210427.sif
-                            <br>
-                            #!/usr/bin/env bash
-                             <br>
-                            #SBATCH --job-name=esm-0.3.1-Enzymes_test_esm <br>
-                            #SBATCH --account=use300 <br>
-                            #SBATCH --partition=compute <br>
-                            #SBATCH --nodes=1 <br>
-                            #SBATCH --ntasks-per-node=1 <br>
-                            #SBATCH --cpus-per-task=128 <br>
-                            #SBATCH --mem=248G <br>
-                            #SBATCH --time=00:30:00 <br>
-                            #SBATCH --output=%x.o%j.%N <br>
-                             <br>
-                            declare -xr SINGULARITY_MODULE='singularitypro/3.5' <br>
-                            declare -xr SINGULAIRTY_CONTAINER_DIR='/cm/shared/apps/containers/singularity' <br>
-                             <br>
-                            module purge <br>
-                            module load "${SINGULARITY_MODULE}" <br>
-                            module list <br>
-                            printenv <br>
-                            <br>
-                            time -p singularity exec --bind /expanse,/scratch "${SINGULAIRTY_CONTAINER_DIR}/ciml/esm-0.3.1-20210427.sif" python -u run_esm.py </br>
-                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-header" id="headingThree">
                         <h2 class="mb-0">
-                            <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">4. Exploring Results</button>                     
+                            <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">4. Running the Flask App</button>                     
                         </h2>
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                         <div class="card-body">
-                            <p>PLACEHOLDER4</p>
+                            <p><a href="https://docs.google.com/document/d/1olO4hqB-vcKe6Hcxfkfew1q8uNWfBYtGYDqzXO-2lF4/edit#heading=h.ylfbzofpc1q3">Flask Application Usage</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">5. Exploring Results</button>                     
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>After submitting all the data for prediction form, the downstream model will compute the sequence predictions (this may take a minute).  The data will be formatted in a table which is separated into enzyme and non-enzyme sections with the probabilities of each class within the columns. Each of the sequence identifiers are hyperlinks to additional information on the embeddings and prediction, such as T-SNE, PCA, accuracies, nearest neighbors, etc.
+                            </p>
                         </div>
                     </div>
                 </div>
